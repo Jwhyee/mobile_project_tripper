@@ -1,7 +1,11 @@
 plugins {
     id 'com.android.application'
 }
-
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
 android {
     compileSdkVersion 31
     buildToolsVersion "30.0.0"
@@ -29,7 +33,7 @@ android {
 }
 
 dependencies {
-
+    implementation 'com.github.prolificinteractive:material-calendarview:04fae8175f'
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
