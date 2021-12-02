@@ -16,7 +16,7 @@
 
         <TextView
             android:background="@drawable/borderline"
-            android:id="@+id/view_title"
+            android:id="@+id/view_sub_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
@@ -25,7 +25,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/view_cost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -38,7 +38,7 @@
 
         <TextView
             android:background="@drawable/borderline"
-            android:id="@+id/view_content"
+            android:id="@+id/view_trans"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"

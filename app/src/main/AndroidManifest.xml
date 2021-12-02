@@ -21,6 +21,7 @@
         <activity android:name=".ViewActivity"/>
         <activity android:name=".WriteActivity"/>
         <activity android:name=".ReWriteActivity"/>
+        <activity android:name=".WriteViewActivity"/>
         <activity android:name=".CancelPopup" android:theme="@android:style/Theme.Dialog"/>
     </application>
 

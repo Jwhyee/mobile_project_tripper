@@ -52,12 +52,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Button add_diary_btn = findViewById(R.id.add_diary_btn);
+
+        // 일기 추가 버튼 클릭 시 화면 전환
+        Button add_diary_btn = (Button) findViewById(R.id.add_diary_btn);
         add_diary_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), WriteViewActivity.class);
-                startActivity(intent);
+                Intent intent2 = new Intent(getApplicationContext(), WriteViewActivity.class);
+                startActivity(intent2);
             }
         });
 

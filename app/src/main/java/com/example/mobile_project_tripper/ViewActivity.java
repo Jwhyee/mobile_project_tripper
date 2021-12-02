@@ -13,8 +13,8 @@ import org.json.JSONObject;
 
 public class ViewActivity extends AppCompatActivity {
     PreferenceManager pref;
-    TextView view_title;
-    TextView view_content;
+    TextView view_sub_title;
+    TextView view_cost, view_trans;
     Button back_list_btn;
 
     @Override
@@ -23,8 +23,9 @@ public class ViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view);
 
         pref = new PreferenceManager();
-        view_title = findViewById(R.id.view_title);
-        view_content = findViewById(R.id.view_content);
+        view_sub_title = findViewById(R.id.view_sub_title);
+        view_cost = findViewById(R.id.view_cost);
+        view_trans = findViewById(R.id.view_trans);
         back_list_btn = findViewById(R.id.back_list_btn);
 
         // 인텐트로 리사이클러뷰 목록 하나의 키값을 받는다
@@ -34,10 +35,13 @@ public class ViewActivity extends AppCompatActivity {
         String value = pref.getString(getApplication(),key);
         try {
             JSONObject jsonObject = new JSONObject(value);
-            String title = (String) jsonObject.getString("title");
-            String content = (String) jsonObject.getString("content");
-            view_title.setText(title);
-            view_content.setText(content);
+            String sub_title = (String) jsonObject.getString("sub_title");
+            String cost = (String) jsonObject.getString("cost");
+            String trans = (String) jsonObject.getString("trans");
+
+            view_sub_title.setText(sub_title);
+            view_cost.setText(cost);
+            view_trans.setText(trans);
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -35,7 +35,7 @@ public class WriteViewActivity extends AppCompatActivity {
     MemoAdapter memoAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_view);
 
@@ -104,9 +104,10 @@ public class WriteViewActivity extends AppCompatActivity {
 
             try {
                 JSONObject jsonObject = new JSONObject(value);
-                String title = (String) jsonObject.getString("title");
-                String content = (String) jsonObject.getString("content");
-                memoAdapter.addItem(new MemoItem(key, title, content));
+                String sub_title = (String) jsonObject.getString("sub_title");
+                String cost = (String) jsonObject.getString("cost");
+                String trans = (String) jsonObject.getString("trans");
+                memoAdapter.addItem(new MemoItem(sub_title, cost, trans));
             } catch (JSONException e) {
             }
 
