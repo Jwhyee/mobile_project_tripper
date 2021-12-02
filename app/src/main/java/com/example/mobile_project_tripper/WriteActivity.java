@@ -68,7 +68,7 @@ public class WriteActivity extends AppCompatActivity {
                 intent.putExtra("date",getTime);
                 intent.putExtra("sub_title",edit_sub_title);
                 intent.putExtra("trans",edit_trans);
-                intent.putExtra("content",edit_cost);
+                intent.putExtra("cost",edit_cost);
                 setResult(RESULT_OK, intent);
                 finish();
 

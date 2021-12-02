@@ -104,10 +104,11 @@ public class WriteViewActivity extends AppCompatActivity {
 
             try {
                 JSONObject jsonObject = new JSONObject(value);
+                String date = (String) jsonObject.getString("date");
                 String sub_title = (String) jsonObject.getString("sub_title");
                 String cost = (String) jsonObject.getString("cost");
                 String trans = (String) jsonObject.getString("trans");
-                memoAdapter.addItem(new MemoItem(sub_title, cost, trans));
+                memoAdapter.addItem(new MemoItem(date,sub_title, cost, trans));
             } catch (JSONException e) {
             }
 
@@ -125,10 +126,11 @@ public class WriteViewActivity extends AppCompatActivity {
 
                 Intent intent = getIntent();
                 String get_date = data.getStringExtra("date");
-                String get_title = data.getStringExtra("title");
-                String get_content = data.getStringExtra("content");
+                String get_sub_title = data.getStringExtra("sub_title");
+                String get_trans = data.getStringExtra("trans");
+                String get_cost = data.getStringExtra("cost");
 
-                memoAdapter.addItem(new MemoItem(get_date,get_title,get_content));
+                memoAdapter.addItem(new MemoItem(get_date,get_sub_title,get_trans,get_cost));
                 memoAdapter.notifyDataSetChanged();
                 Toast.makeText(WriteViewActivity.this, "작성 되었습니다", Toast.LENGTH_SHORT).show();
 

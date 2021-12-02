@@ -92,7 +92,7 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.ViewHolder>{
     // 커스텀 뷰 홀더가 아님
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView date;
-        TextView title;
+        TextView sub_title, trans, cost;
         Button view_btn;
         Button delete_btn;
 
@@ -101,14 +101,18 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.ViewHolder>{
 
             //뷰홀더에 필요한 아이템데이터 findview
             date = itemView.findViewById(R.id.date_contain);//아이템에 들어갈 텍스트
-            title = itemView.findViewById(R.id.title_contain);//아이템에 들어갈 텍스트
+            sub_title = itemView.findViewById(R.id.sub_title_contain);//서브 타이틀에 들어갈 텍스트
+            trans = itemView.findViewById(R.id.trans_contain);//이동수단에 들어갈 텍스트
+            cost = itemView.findViewById(R.id.cost_contain);//비용에 들어갈 텍스트
             view_btn = itemView.findViewById(R.id.view_btn);
             delete_btn = itemView.findViewById(R.id.delete_btn);
         }
         //아이템뷰에 binding할 데이터
         public void setItem(com.example.mobile_project_tripper.MemoItem item) {
-            date.setText(item.getDate());
-            title.setText(item.getTitle());
+            date.setText(item.get_date());
+            sub_title.setText(item.get_sub_title());
+            trans.setText(item.get_trans());
+            cost.setText(item.get_cost());
 
         }
     }
