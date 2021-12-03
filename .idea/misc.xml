@@ -5,14 +5,16 @@
       <map>
         <entry key="app/src/main/res/drawable-v24/borderline.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/btn_round.xml" value="0.14375" />
+        <entry key="app/src/main/res/drawable-v24/map_ping_resize.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/layout/activity_cancel_popup.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23958333333333334" />
-        <entry key="app/src/main/res/layout/activity_re_write.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_re_write.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_view.xml" value="0.13148148148148148" />
         <entry key="app/src/main/res/layout/activity_write.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_write_view.xml" value="0.13148148148148148" />
-        <entry key="app/src/main/res/layout/item_rv_memo.xml" value="0.18009118541033434" />
-        <entry key="app/src/main/res/layout/listview.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_rv_memo.xml" value="0.22327898550724637" />
+        <entry key="app/src/main/res/layout/listview.xml" value="0.1342208946746805" />
+        <entry key="app/src/main/res/layout/main_item_list.xml" value="0.22327898550724637" />
       </map>
     </option>
   </component>
