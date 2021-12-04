@@ -1,10 +1,14 @@
 package com.example.mobile_project_tripper;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -19,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -26,42 +31,86 @@ public class WriteViewActivity extends AppCompatActivity {
     private TextView textView_Date;
     private DatePickerDialog.OnDateSetListener callbackMethod;
 
-    private int REQUEST_TEST = 200;
-    private int REQUEST_DEL = 201;
-
     Button write_btn;
-    PreferenceManager pref;
-    RecyclerView recyclerView;
-    MemoAdapter memoAdapter;
+    Context context;
+
+    SQLiteDatabase db;
+    DBHelper mDbHelper;
+
+    private RecyclerView listView;
+    private ArrayList<MemoItem> memoItemList= new ArrayList<>(); // SQLite에서 가져온 원본 데이터 리스트
+    RecyclerView.Adapter listViewAdapter;
+    RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_view);
 
-        this.InitializeView();
-        this.InitializeListener();
-
-
-        pref = new PreferenceManager();
         write_btn = findViewById(R.id.write_btn);
         write_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), WriteActivity.class);
-                startActivityForResult(intent,REQUEST_TEST);
+                startActivity(intent);
             }
         });
 
-        //리사이클러뷰 세팅
-        LinearLayoutManager linearLayoutManager;
-        recyclerView = findViewById(R.id.memo_rv);//리사이클러뷰 findView
-        linearLayoutManager = new LinearLayoutManager(WriteViewActivity.this, LinearLayoutManager.VERTICAL, false);
+        context = this.getBaseContext();
 
-        memoAdapter = new MemoAdapter(WriteViewActivity.this);
-        recyclerView.setLayoutManager(linearLayoutManager);//linearlayout 세팅
-        recyclerView.setAdapter(memoAdapter);//adapter 세팅
+        listView = (RecyclerView)findViewById(R.id.memo_rv);
+        listView.setHasFixedSize(true);
+
+        memoItemList.clear(); // 데이터 초기화
+        mDbHelper = new DBHelper(this);
+        db= mDbHelper.getReadableDatabase();
+        db.beginTransaction();
+
+        Cursor cursor = mDbHelper.LoadSQLiteDBCursor();
+        try {
+            cursor.moveToFirst();
+            System.out.println("SQLiteDB 개수 = " + cursor.getCount());
+            while (!cursor.isAfterLast()) {
+                addGroupItem(cursor.getInt(0),cursor.getString(1),cursor.getString(2),
+                        cursor.getString(3),cursor.getString(4));
+                cursor.moveToNext();
+            }
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+                db.endTransaction();
+            }
+        }
+
+        // Set Layout Manager
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        listView.setLayoutManager(layoutManager);
+
+        listViewAdapter = new MemoAdapter(memoItemList, this); // Adapter 생성
+        listView.setAdapter(listViewAdapter); // 어댑터를 리스트뷰에 세팅
     }
+
+    private void addGroupItem(int id, String date, String sub_title, String trans, String cost) {
+        MemoItem item = new MemoItem();
+        item.setId(id);
+        item.setDate(date);
+        item.setSub_title(sub_title);
+        item.setTrans(trans);
+        item.setCost(cost);
+        memoItemList.add(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
+
     // 날짜지정 시작
     public void InitializeView()
     {
@@ -89,69 +138,4 @@ public class WriteViewActivity extends AppCompatActivity {
 
     // 날짜지정 끝
 
-    public void loadMemo() {
-        SharedPreferences prefb = getSharedPreferences("memo_contaion", MODE_PRIVATE);
-        Collection<?> col_val = prefb.getAll().values();
-        Iterator<?> it_val = col_val.iterator();
-        Collection<?> col_key = prefb.getAll().keySet();
-        Iterator<?> it_key = col_key.iterator();
-
-        while(it_val.hasNext() && it_key.hasNext()){
-            String key = (String) it_key.next();
-            Log.d("Result", key);
-            String value = (String) it_val.next();
-            Log.d("Result", value);
-
-            try {
-                JSONObject jsonObject = new JSONObject(value);
-                String date = (String) jsonObject.getString("date");
-                String sub_title = (String) jsonObject.getString("sub_title");
-                String cost = (String) jsonObject.getString("cost");
-                String trans = (String) jsonObject.getString("trans");
-                memoAdapter.addItem(new MemoItem(date,sub_title, cost, trans));
-            } catch (JSONException e) {
-            }
-
-            memoAdapter.notifyDataSetChanged();
-        }
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_TEST) {
-            if (resultCode == RESULT_OK) {
-
-                Intent intent = getIntent();
-                String get_date = data.getStringExtra("date");
-                String get_sub_title = data.getStringExtra("sub_title");
-                String get_trans = data.getStringExtra("trans");
-                String get_cost = data.getStringExtra("cost");
-
-                memoAdapter.addItem(new MemoItem(get_date,get_sub_title,get_trans,get_cost));
-                memoAdapter.notifyDataSetChanged();
-                Toast.makeText(WriteViewActivity.this, "작성 되었습니다", Toast.LENGTH_SHORT).show();
-
-            } else {   // RESULT_CANCEL
-                Toast.makeText(WriteViewActivity.this, "저장 되지 않음", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-
-        if (requestCode == REQUEST_DEL){
-            if(resultCode == RESULT_OK){
-                Log.d("Main", "삭제 데이터 옴");
-                Intent intent = getIntent();
-                String get_key = data.getStringExtra("key");
-                Log.d("Main", get_key);
-                pref.removeKey(WriteViewActivity.this,get_key);
-                memoAdapter.remove(get_key);
-                loadMemo();
-                memoAdapter.notifyDataSetChanged();
-                Toast.makeText(WriteViewActivity.this, "저장 되지 않음", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 }

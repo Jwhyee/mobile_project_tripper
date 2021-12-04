@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //DB 추가
 
-        helper = new DBHelper(MainActivity.this, "diaryDB.db", null, 1);
+        helper = new DBHelper(this);
         db = helper.getWritableDatabase();
         helper.onCreate(db);
         RecyclerView rv_profile = findViewById(R.id.diary_list);

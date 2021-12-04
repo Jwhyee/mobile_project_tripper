@@ -98,7 +98,8 @@
         android:layout_height="match_parent"
         android:layout_weight="0.3"
         android:orientation="vertical"
-        android:layout_marginTop="40dp">
+        android:layout_marginTop="40dp"
+        >
         <Button
             android:id="@+id/write_btn"
             android:layout_width="45dp"
@@ -113,7 +114,10 @@
             android:id="@+id/memo_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp" />
+            android:padding="10dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/diary_write"
+            />
     </LinearLayout>
 
     <LinearLayout

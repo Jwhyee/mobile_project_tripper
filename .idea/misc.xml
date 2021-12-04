@@ -10,8 +10,9 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23958333333333334" />
         <entry key="app/src/main/res/layout/activity_re_write.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_view.xml" value="0.13148148148148148" />
-        <entry key="app/src/main/res/layout/activity_write.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_write_view.xml" value="0.13148148148148148" />
+        <entry key="app/src/main/res/layout/activity_write.xml" value="0.4621676998002506" />
+        <entry key="app/src/main/res/layout/activity_write_view.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/diary_write.xml" value="0.24934970503572057" />
         <entry key="app/src/main/res/layout/item_rv_memo.xml" value="0.22327898550724637" />
         <entry key="app/src/main/res/layout/listview.xml" value="0.1342208946746805" />
         <entry key="app/src/main/res/layout/main_item_list.xml" value="0.22327898550724637" />
