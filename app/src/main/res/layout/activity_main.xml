@@ -86,7 +86,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/btn_round"
                 android:text="일기 추가"
-                android:textColor="@color/white" />
+                 />
         </LinearLayout>
     </RelativeLayout>
 

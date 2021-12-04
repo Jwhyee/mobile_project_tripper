@@ -5,88 +5,79 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 public class DBHelper extends SQLiteOpenHelper {
-    private static final int DB_VERSION = 1;
-    private static final String DB_NAME = "tripper.db"; // private 거는 이유가 다른 곳에서 사용 될 여지를 만들지 않기 위해서
-    public DBHelper(@Nullable Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
+    public static final String DATABASE_NAME = "diary";
+    public static final String TABLE_NAME = "diary_detail_list_";
+    public static final String C_ID = "_id";
+    public static final String D_SUB_NO = "d_no";
+    public static final String TITLE = "title";
+    public static final String COST = "cost";
+    public static final String TYPE = "type";
+    public static final String DETAIL = "description";
+    public static final String TIME = "time";
+    public static final String DATE = "date";
+    public static final int DATABASE_VERSION = 2;
+
+
+    public static final String D_NO = "d_no";
+    public static final String D_TITLE = "d_title";
+    public static final String D_START_DATE = "d_start_date";
+    public static final String D_END_DATE = "d_end_date";
+    public static final String D_LOCATION = "d_location";
+    public static final String TABLE_NAME2 = "diary_detail_";
+
+    private final String createDB = "create table if not exists " + TABLE_NAME + " ( "
+            + C_ID + " integer primary key autoincrement, "
+            + D_SUB_NO + "intger"
+            + TITLE + " text, "
+            + DETAIL + " text, "
+            + TYPE + " text, "
+            + TIME + " text, "
+            + COST + " text, "
+            + DATE + " text)";
+
+    private final String createDB2 = "create table if not exists " + TABLE_NAME2 + " ( "
+            + D_NO + " integer primary key autoincrement, "
+            + D_TITLE + " text, "
+            + D_START_DATE + " text, "
+            + D_END_DATE + " text, "
+            + D_LOCATION + " text)";
+
+    public DBHelper(Context context){
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // 전체적인 일기를 추가하면 저장될 table
-        String sql = "CREATE TABLE if not exists diary_list ("
-                + "d_no integer primary key autoincrement,"
-                // 각 다이어리의 고유 번호
-                + "d_title text,"
-                // 다이어리의 큰 제목
-                + "d_start_date date,"
-                // 여행 시작 날짜
-                + "d_end_date date,"
-                // 여행 종료 날짜
-                + "d_location text);";
-                // 여행지
-        db.execSQL(sql);
-
-        // 일기 추가의 + 버튼을 누르면 나오는 데이터를 저장하는 table
-        String sql2 = "CREATE TABLE if not exists diary_detail_list ("
-                + "d_no integer primary key autoincrement,"
-                // 전체 일기에 참조할 번호
-                + "d_detail_sub_title text,"
-                // 소제목
-                + "d_detail_time text,"
-                // 시간
-                + "d_detail_transportation text,"
-                // 이동수단
-                + "d_cost integer);";
-                // 비용
-        db.execSQL(sql2);
+        db.execSQL(createDB);
+        db.execSQL(createDB2);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "DROP TABLE if exists diary_list";
-
-        db.execSQL(sql);
-        onCreate(db);
+        db.execSQL("drop table " + TABLE_NAME);
     }
 
-    public Cursor LoadSQLiteDBCursor(){
+    public Cursor LoadSQLiteDBCursor() {
         SQLiteDatabase db = this.getReadableDatabase();
         db.beginTransaction();
-
-        String select_diary = "SELECT * FROM diary_detail_list";
+        // Select All Query
+        String selectQuery = "SELECT _id,title,type,description,time,date,cost FROM " + TABLE_NAME;
         Cursor cursor = null;
-        try{
-            cursor = db.rawQuery(select_diary,null);
+        try {
+            cursor = db.rawQuery(selectQuery, null);
             db.setTransactionSuccessful();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             db.endTransaction();
         }
         return cursor;
     }
 
-    public void insert_diary(String d_detail_sub_title, String d_detail_time, String d_detail_transportation, String d_cost){
+    public void insert_diary(String D_TITLE, String D_START_DATE, String D_END_DATE, String D_LOCATION){
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("INSERT INTO diary_detail_list (d_detail_sub_title, d_detail_time, d_detail_transportation, d_cost) VALUES ('"+ d_detail_sub_title +"',  '"+ d_detail_time +"' , '"+ d_detail_transportation +"', '"+d_cost+"');");
-    }
-
-    public void update_diary(String d_detail_sub_title, String d_detail_time, String d_detail_transportation, String d_cost, int d_no){
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE diary_detail_list SET d_detail_sub_title = '"+d_detail_sub_title+"', d_detail_time ='"+d_detail_time+"', d_detail_transportation = '"+d_detail_transportation+"', d_cost='"+d_cost+"' WHERE d_no = '"+d_no+"'");
-    }
-
-    public void delete_diary(int d_no){
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM diary_detail_list WHERE d_no = '"+d_no+"'");
-
+        db.execSQL("INSERT INTO diary_detail (D_TITLE, D_START_DATE, D_END_DATE, D_LOCATION) VALUES ('"+ D_TITLE +"',  '"+ D_START_DATE +"' , '"+ D_END_DATE +"', '"+D_LOCATION+"');");
     }
 
 }
