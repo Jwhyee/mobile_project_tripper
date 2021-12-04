@@ -28,7 +28,6 @@ public class ViewNote extends AppCompatActivity {
 
         Cursor cursor = db.rawQuery("select * from " + dbHelper.TABLE_NAME + " where " + dbHelper.C_ID + "=" + id, null);
         TextView title = (TextView) findViewById(R.id.title);
-        TextView cost = (TextView) findViewById(R.id.cost);
         TextView detail = (TextView) findViewById(R.id.detail);
         TextView notetype = (TextView) findViewById(R.id.note_type_ans);
         TextView time = (TextView) findViewById(R.id.alertvalue);
@@ -36,7 +35,6 @@ public class ViewNote extends AppCompatActivity {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 title.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.TITLE)));
-                cost.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.COST)));
                 detail.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.DETAIL)));
                 notetype.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.TYPE)));
                 time.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.TIME)));
@@ -55,6 +53,7 @@ public class ViewNote extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_view_note, menu);
         return true;
     }
@@ -69,19 +68,23 @@ public class ViewNote extends AppCompatActivity {
                 startActivity(openMainActivity);
                 return true;
             case R.id.action_edit:
+
                 Intent openEditNote = new Intent(ViewNote.this, EditNote.class);
                 openEditNote.putExtra(getString(R.string.intent_row_id), id);
                 startActivity(openEditNote);
                 return true;
+
             case R.id.action_discard:
                 AlertDialog.Builder builder = new AlertDialog.Builder(ViewNote.this);
-                builder.setTitle(getString(R.string.delete_title));
-                builder.setMessage(getString(R.string.delete_message));
-                builder.setIcon(android.R.drawable.ic_dialog_alert);
-                builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                builder
+                        .setTitle(getString(R.string.delete_title))
+                        .setMessage(getString(R.string.delete_message))
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 int id = getIntent().getExtras().getInt(getString(R.string.rodID));
                                 db.delete(DBHelper.TABLE_NAME, DBHelper.C_ID + "=" + id, null);
+                                db.close();
                                 Intent openMainActivity = new Intent(ViewNote.this, WriteView.class);
                                 startActivity(openMainActivity);
 

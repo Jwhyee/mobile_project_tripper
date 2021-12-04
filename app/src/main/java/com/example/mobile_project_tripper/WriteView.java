@@ -25,6 +25,7 @@ public class WriteView extends AppCompatActivity {
 
     SQLiteDatabase db;
     DBHelper mDBHelper;
+
     Button save_btn;
 
     EditText title, location;
@@ -39,6 +40,7 @@ public class WriteView extends AppCompatActivity {
     private RecyclerView listView;
     private ArrayList<MemoItem> memoItemList = new ArrayList<>(); // SQLite에서 가져온 원본 데이터 리스트
     RecyclerView.Adapter listViewAdapter; // ListViewAdapter 대신 RecyclerView.Adapter
+    RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class WriteView extends AppCompatActivity {
             System.out.println("SQLiteDB 개수 = " + cursor.getCount());
             while (!cursor.isAfterLast()) {
                 addGroupItem(cursor.getLong(0),cursor.getString(1),cursor.getString(2),
-                        cursor.getString(3),cursor.getString(4),cursor.getString(5), cursor.getString(6));
+                        cursor.getString(3),cursor.getString(4),cursor.getString(5));
                 cursor.moveToNext();
             }
             db.setTransactionSuccessful();
@@ -96,55 +98,17 @@ public class WriteView extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 title = (EditText) findViewById(R.id.title);
-                location = (EditText) findViewById(R.id.location);
                 start_date = (TextView) findViewById(R.id.start_date);
                 end_date = (TextView) findViewById(R.id.end_date);
+                location = (EditText) findViewById(R.id.location);
 
                 mDBHelper.insert_diary(title.getText().toString(), start_date.getText().toString(), end_date.getText().toString(),location.getText().toString());
 
-                Intent intent = new Intent(getApplicationContext(), WriteView.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
 
-    }
-
-    public void addGroupItem(Long uid, String title, String memo_type, String detail, String time, String date, String cost){
-        MemoItem item = new MemoItem();
-        item.setUid(uid);
-        item.setTitle(title);
-        item.setCost(cost);
-        item.setMemo_type(memo_type);
-        item.setDetail(detail);
-        item.setTime(time);
-        item.setDate(date);
-        memoItemList.add(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        moveTaskToBack(true);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch(item.getItemId()) {
-            case R.id.action_new:
-                Intent openCreateNote = new Intent(WriteView.this, CreateNote.class);
-                startActivity(openCreateNote);
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     public void InitializeView()
@@ -181,5 +145,45 @@ public class WriteView extends AppCompatActivity {
         DatePickerDialog dialog_end = new DatePickerDialog(this, callbackMethod_end, 2019,5,24);
         dialog_end.show();
     }
+
+    public void addGroupItem(Long uid, String title, String memo_type, String detail, String time, String date){
+        MemoItem item = new MemoItem();
+        item.setUid(uid);
+        item.setTitle(title);
+        item.setMemo_type(memo_type);
+        item.setDetail(detail);
+        item.setTime(time);
+        item.setDate(date);
+        memoItemList.add(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent setIntent = new Intent(this, MainActivity.class);
+        startActivity(setIntent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+            case R.id.action_new:
+                Intent openCreateNote = new Intent(WriteView.this, CreateNote.class);
+                startActivity(openCreateNote);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
 
 }

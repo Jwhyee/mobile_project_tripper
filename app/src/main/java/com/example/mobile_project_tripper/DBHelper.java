@@ -6,29 +6,28 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "diary";
-    public static final String TABLE_NAME = "diary_detail_list_";
+    public static final String DATABASE_NAME = "diary02";
+    public static final String TABLE_NAME = "diary_detail_list";
     public static final String C_ID = "_id";
-    public static final String D_SUB_NO = "d_no";
-    public static final String TITLE = "title";
     public static final String COST = "cost";
+    public static final String TITLE = "title";
     public static final String TYPE = "type";
     public static final String DETAIL = "description";
     public static final String TIME = "time";
     public static final String DATE = "date";
-    public static final int DATABASE_VERSION = 2;
+    public static final String D_SUB_NO = "d_no";
 
-
+    public static final int DATABASE_VERSION = 1;
     public static final String D_NO = "d_no";
     public static final String D_TITLE = "d_title";
     public static final String D_START_DATE = "d_start_date";
     public static final String D_END_DATE = "d_end_date";
     public static final String D_LOCATION = "d_location";
-    public static final String TABLE_NAME2 = "diary_detail_";
+    public static final String TABLE_NAME2 = "diary_detail";
 
     private final String createDB = "create table if not exists " + TABLE_NAME + " ( "
             + C_ID + " integer primary key autoincrement, "
-            + D_SUB_NO + "intger"
+            + D_SUB_NO + "text,"
             + TITLE + " text, "
             + DETAIL + " text, "
             + TYPE + " text, "
@@ -62,7 +61,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         db.beginTransaction();
         // Select All Query
-        String selectQuery = "SELECT _id,title,type,description,time,date,cost FROM " + TABLE_NAME;
+        String selectQuery = "SELECT _id,title,type,description,time,date FROM " + TABLE_NAME;
         Cursor cursor = null;
         try {
             cursor = db.rawQuery(selectQuery, null);
