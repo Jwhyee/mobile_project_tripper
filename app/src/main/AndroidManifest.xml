@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mobile_project_tripper">
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="false"
@@ -13,6 +16,7 @@
         <activity android:name=".ViewNote" />
         <activity android:name=".CreateNote" />
         <activity android:name=".WriteView"/>
+        <activity android:name=".ImageInsert"/>
         <activity android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

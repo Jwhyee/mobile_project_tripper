@@ -9,7 +9,7 @@
         <entry key="app/src/main/res/drawable/borderline.xml" value="0.14791666666666667" />
         <entry key="app/src/main/res/layout/activity_cancel_popup.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_create_note.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_diary_view.xml" value="0.18478260869565216" />
+        <entry key="app/src/main/res/layout/activity_diary_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_edit_note.xml" value="0.18478260869565216" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23958333333333334" />
         <entry key="app/src/main/res/layout/activity_re_write.xml" value="0.25" />

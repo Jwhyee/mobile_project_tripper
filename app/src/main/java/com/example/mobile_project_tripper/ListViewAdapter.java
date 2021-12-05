@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,10 +14,10 @@ import java.util.ArrayList;
 
 public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context mContext;
-    private ArrayList<MemoItem> IvList;
+    private ArrayList<DiaryItem> IvList;
     int Position;
 
-    public ListViewAdapter(ArrayList<MemoItem> items, Context context) {
+    public ListViewAdapter(ArrayList<DiaryItem> items, Context context) {
         IvList = items;
         mContext = context;
     }
@@ -70,7 +69,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             });
         }
 
-        public void onBind(MemoItem item) {
+        public void onBind(DiaryItem item) {
             mTitle.setText(item.getTitle());
             memoType.setText(item.getMemo_type());
             mCost.setText(item.getCost());

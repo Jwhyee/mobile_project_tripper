@@ -52,9 +52,12 @@
     <string name="type_list_entry">메모구분</string>
     <string name="time_vie">시간</string>
     <string name="alarmtext">Alert: </string>
-    <string name="dateformate">dd/MM/yyyy</string>
+    <string name="dateformate">yyyy/MM/dd</string>
     <string name="Not_Set_Alert">Not Set</string>
     <string name="ok">Ok</string>
     <string name="title_msg">title</string>
     <string name="titttle">title</string>
+
+    <string name="permission_1">[설정] > [권한] 에서 권한을 허용할 수 있습니다.</string>
+    <string name="permission_2">사진 및 파일을 저장하기 위하여 접근 권한이 필요합니다.</string>
 </resources>

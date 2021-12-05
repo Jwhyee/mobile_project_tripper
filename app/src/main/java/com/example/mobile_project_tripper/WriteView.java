@@ -38,7 +38,7 @@ public class WriteView extends AppCompatActivity {
 
 
     private RecyclerView listView;
-    private ArrayList<MemoItem> memoItemList = new ArrayList<>(); // SQLite에서 가져온 원본 데이터 리스트
+    private ArrayList<DiaryItem> diaryItemList = new ArrayList<>(); // SQLite에서 가져온 원본 데이터 리스트
     RecyclerView.Adapter listViewAdapter; // ListViewAdapter 대신 RecyclerView.Adapter
     RecyclerView.LayoutManager layoutManager;
 
@@ -55,7 +55,7 @@ public class WriteView extends AppCompatActivity {
         listView = (RecyclerView)findViewById(R.id.commentslist);
         listView.setHasFixedSize(true);
 
-        memoItemList.clear(); // 가져온 데이터 초기화
+        diaryItemList.clear(); // 가져온 데이터 초기화
         mDBHelper = new DBHelper(this);
         db= mDBHelper.getReadableDatabase();
         db.beginTransaction();
@@ -84,7 +84,7 @@ public class WriteView extends AppCompatActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         listView.setLayoutManager(layoutManager);
 
-        listViewAdapter = new ListViewAdapter(memoItemList, this); // Adapter 생성
+        listViewAdapter = new ListViewAdapter(diaryItemList, this); // Adapter 생성
         listView.setAdapter(listViewAdapter); // 어댑터를 리스트뷰에 세팅
 
         setInit(); // insert_diary 및 save_btn 활성화
@@ -148,14 +148,14 @@ public class WriteView extends AppCompatActivity {
     }
 
     public void addGroupItem(Long uid, String title, String memo_type, String detail, String time, String date){
-        MemoItem item = new MemoItem();
+        DiaryItem item = new DiaryItem();
         item.setUid(uid);
         item.setTitle(title);
         item.setMemo_type(memo_type);
         item.setDetail(detail);
         item.setTime(time);
         item.setDate(date);
-        memoItemList.add(item);
+        diaryItemList.add(item);
     }
 
     @Override

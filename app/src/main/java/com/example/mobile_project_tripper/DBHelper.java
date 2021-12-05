@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "diary07";
+    public static final String DATABASE_NAME = "diary08";
     public static final String TABLE_NAME = "diary_detail_list";
     public static final String TABLE_NAME_TEMP = "diary_detail_list_temp";
     public static final String C_ID = "_id";
@@ -16,7 +16,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String DETAIL = "description";
     public static final String TIME = "time";
     public static final String DATE = "date";
-    public static final String D_SUB_NO = "d_no";
 
     public static final int DATABASE_VERSION = 1;
     public static final String D_NO = "d_no";
@@ -93,8 +92,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void d_insert(String d_title ){
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM diary_detail_list_temp;");
-        db.execSQL("UPDATE diary_detail_list SET d_title = '"+d_title+"' WHERE d_title is NULL;");
+        db.execSQL("DELETE FROM diary_detail_list;");
+        db.execSQL("UPDATE diary_detail_list_temp SET d_title = '"+d_title+"' WHERE d_title is NULL;");
 
     }
 
