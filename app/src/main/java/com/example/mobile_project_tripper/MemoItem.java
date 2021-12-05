@@ -10,25 +10,6 @@ public class MemoItem {
     private String cost; // 비용
 
     public MemoItem() {
-
-    }
-
-    public String getCost() {
-        return cost;
-    }
-
-    public void setCost(String cost) {
-        this.cost = cost;
-    }
-
-    public MemoItem(Long uid, String title, String memo_type, String detail, String time, String date, String cost) {
-        this.uid = uid;
-        this.title = title;
-        this.memo_type = memo_type;
-        this.detail = detail;
-        this.time = time;
-        this.date = date;
-        this.cost = cost;
     }
 
     public Long getUid() {
@@ -77,5 +58,13 @@ public class MemoItem {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getCost() {
+        return cost;
+    }
+
+    public void setCost(String cost) {
+        this.cost = cost;
     }
 }

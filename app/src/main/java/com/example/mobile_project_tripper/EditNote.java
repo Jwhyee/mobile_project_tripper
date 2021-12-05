@@ -80,7 +80,7 @@ public class EditNote extends AppCompatActivity {
                     }
                 });
 
-        Cursor cursor = db.rawQuery("select * from " + mDBHelper.TABLE_NAME + " where " + mDBHelper.C_ID + "=" + id, null);
+        Cursor cursor = db.rawQuery("select * from " + mDBHelper.TABLE_NAME_TEMP + " where " + mDBHelper.C_ID + "=" + id, null);
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -168,10 +168,12 @@ public class EditNote extends AppCompatActivity {
             case R.id.action_save:
                 final long id = getIntent().getExtras().getLong(getString(R.string.row_id_long));
                 String title = mTitleText.getText().toString();
+                String cost = mCost.getText().toString();
                 String detail = mDescriptionText.getText().toString();
                 String type = mSpinner.getSelectedItem().toString();
                 ContentValues cv = new ContentValues();
                 cv.put(mDBHelper.TITLE, title);
+                cv.put(mDBHelper.COST, cost);
                 cv.put(mDBHelper.DETAIL, detail);
                 cv.put(mDBHelper.TYPE, type);
                 cv.put(mDBHelper.TIME, getString(R.string.Not_Set));
@@ -197,7 +199,7 @@ public class EditNote extends AppCompatActivity {
 
                 }
 
-                db.update(mDBHelper.TABLE_NAME, cv, mDBHelper.C_ID + "=" + id, null);
+                db.update(mDBHelper.TABLE_NAME_TEMP, cv, mDBHelper.C_ID + "=" + id, null);
 
                 Intent openMainScreen = new Intent(EditNote.this, WriteView.class);
                 openMainScreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

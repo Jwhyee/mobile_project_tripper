@@ -154,6 +154,7 @@ public class CreateNote extends AppCompatActivity {
                 }
 
                 db.insert(mDBHelper.TABLE_NAME, null, cv);
+                db.insert(mDBHelper.TABLE_NAME_TEMP, null, cv);
 
                 Intent openMainScreen = new Intent(this, WriteView.class);
                 openMainScreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

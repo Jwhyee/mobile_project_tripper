@@ -79,7 +79,7 @@ public class WriteView extends AppCompatActivity {
             }
         }
 
-        // Set Layout Manager
+        // 레이아웃 매니저 세팅
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         listView.setLayoutManager(layoutManager);
@@ -87,7 +87,7 @@ public class WriteView extends AppCompatActivity {
         listViewAdapter = new ListViewAdapter(memoItemList, this); // Adapter 생성
         listView.setAdapter(listViewAdapter); // 어댑터를 리스트뷰에 세팅
 
-        setInit();
+        setInit(); // insert_diary 및 save_btn 활성화
     }
 
     private void setInit() {
@@ -103,6 +103,7 @@ public class WriteView extends AppCompatActivity {
                 location = (EditText) findViewById(R.id.location);
 
                 mDBHelper.insert_diary(title.getText().toString(), start_date.getText().toString(), end_date.getText().toString(),location.getText().toString());
+                mDBHelper.d_insert(title.getText().toString());
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);

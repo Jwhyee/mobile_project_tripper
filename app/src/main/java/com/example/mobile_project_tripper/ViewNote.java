@@ -26,8 +26,9 @@ public class ViewNote extends AppCompatActivity {
         dbHelper = new DBHelper(this);
         db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("select * from " + dbHelper.TABLE_NAME + " where " + dbHelper.C_ID + "=" + id, null);
+        Cursor cursor = db.rawQuery("select * from " + dbHelper.TABLE_NAME_TEMP + " where " + dbHelper.C_ID + "=" + id, null);
         TextView title = (TextView) findViewById(R.id.title);
+        TextView cost = (TextView) findViewById(R.id.cost);
         TextView detail = (TextView) findViewById(R.id.detail);
         TextView notetype = (TextView) findViewById(R.id.note_type_ans);
         TextView time = (TextView) findViewById(R.id.alertvalue);
@@ -35,6 +36,7 @@ public class ViewNote extends AppCompatActivity {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 title.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.TITLE)));
+                cost.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.COST)));
                 detail.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.DETAIL)));
                 notetype.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.TYPE)));
                 time.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.TIME)));
@@ -83,7 +85,7 @@ public class ViewNote extends AppCompatActivity {
                         .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 int id = getIntent().getExtras().getInt(getString(R.string.rodID));
-                                db.delete(DBHelper.TABLE_NAME, DBHelper.C_ID + "=" + id, null);
+                                db.delete(DBHelper.TABLE_NAME_TEMP, DBHelper.C_ID + "=" + id, null);
                                 db.close();
                                 Intent openMainActivity = new Intent(ViewNote.this, WriteView.class);
                                 startActivity(openMainActivity);

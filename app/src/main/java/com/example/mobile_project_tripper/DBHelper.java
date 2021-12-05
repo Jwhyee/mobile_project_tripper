@@ -6,8 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "diary02";
+    public static final String DATABASE_NAME = "diary07";
     public static final String TABLE_NAME = "diary_detail_list";
+    public static final String TABLE_NAME_TEMP = "diary_detail_list_temp";
     public static final String C_ID = "_id";
     public static final String COST = "cost";
     public static final String TITLE = "title";
@@ -27,7 +28,17 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private final String createDB = "create table if not exists " + TABLE_NAME + " ( "
             + C_ID + " integer primary key autoincrement, "
-            + D_SUB_NO + "text,"
+            + D_TITLE + " text, "
+            + TITLE + " text, "
+            + DETAIL + " text, "
+            + TYPE + " text, "
+            + TIME + " text, "
+            + COST + " text, "
+            + DATE + " text)";
+
+    private final String createDB_temp = "create table if not exists " + TABLE_NAME_TEMP + " ( "
+            + C_ID + " integer primary key autoincrement, "
+            + D_TITLE + " text, "
             + TITLE + " text, "
             + DETAIL + " text, "
             + TYPE + " text, "
@@ -50,6 +61,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(createDB);
         db.execSQL(createDB2);
+        db.execSQL(createDB_temp);
     }
 
     @Override
@@ -77,6 +89,13 @@ public class DBHelper extends SQLiteOpenHelper {
     public void insert_diary(String D_TITLE, String D_START_DATE, String D_END_DATE, String D_LOCATION){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("INSERT INTO diary_detail (D_TITLE, D_START_DATE, D_END_DATE, D_LOCATION) VALUES ('"+ D_TITLE +"',  '"+ D_START_DATE +"' , '"+ D_END_DATE +"', '"+D_LOCATION+"');");
+    }
+
+    public void d_insert(String d_title ){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM diary_detail_list_temp;");
+        db.execSQL("UPDATE diary_detail_list SET d_title = '"+d_title+"' WHERE d_title is NULL;");
+
     }
 
 }

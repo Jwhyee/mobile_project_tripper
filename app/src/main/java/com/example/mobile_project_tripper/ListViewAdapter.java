@@ -44,7 +44,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public TextView mTitle;
         public TextView memoType;
         public TextView mDetail;
-        public ImageView mImage;
+        public TextView mCost;
         public TextView mTime;
         public TextView mDate;
 
@@ -52,6 +52,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
             // 화면에 표시될 View 로부터 위젯에 대한 참조 획득
             mTitle = itemView.findViewById(R.id.title);
+            mCost = itemView.findViewById(R.id.cost);
             memoType = itemView.findViewById(R.id.type);
             mDetail = itemView.findViewById(R.id.Detail);
             mTime = itemView.findViewById(R.id.time);
@@ -72,8 +73,8 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void onBind(MemoItem item) {
             mTitle.setText(item.getTitle());
             memoType.setText(item.getMemo_type());
+            mCost.setText(item.getCost());
             mDetail.setText(item.getDetail());
-            int resourceId = R.drawable.ic_action_alarms;
             mTime.setText(item.getTime());
             mDate.setText(item.getDate());
         }
