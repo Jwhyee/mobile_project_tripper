@@ -129,24 +129,38 @@
             android:layout_height="40dp"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnGallery"
-                android:text="사진추가"
-                android:width="50dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/imageView_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="이미지 선택"
+                android:textColor="#000000"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
+                android:layout_width="350dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:onClick="onClickButton1"
+                android:background="@drawable/borderline" />
         </LinearLayout>
+
+
         <Button
             android:id="@+id/save_btn"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:layout_marginTop="10sp"
+            android:layout_marginTop="50dp"
             android:background="#448AFF"
             android:text="저장하기"
             android:textColor="#FFFFFF"
@@ -160,7 +174,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="280sp"
+        android:layout_marginTop="400sp"
         android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView

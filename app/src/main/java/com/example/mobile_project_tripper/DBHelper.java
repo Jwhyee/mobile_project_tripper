@@ -1,12 +1,16 @@
 package com.example.mobile_project_tripper;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+
 public class DBHelper extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "diary08";
+    public static final String DATABASE_NAME = "diary";
     public static final String TABLE_NAME = "diary_detail_list";
     public static final String TABLE_NAME_TEMP = "diary_detail_list_temp";
     public static final String C_ID = "_id";
@@ -16,6 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String DETAIL = "description";
     public static final String TIME = "time";
     public static final String DATE = "date";
+    public static final String D_IMG = "img";
 
     public static final int DATABASE_VERSION = 1;
     public static final String D_NO = "d_no";
@@ -23,7 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String D_START_DATE = "d_start_date";
     public static final String D_END_DATE = "d_end_date";
     public static final String D_LOCATION = "d_location";
-    public static final String TABLE_NAME2 = "diary_detail";
+    public static final String TABLE_NAME_MAIN = "diary_detail";
 
     private final String createDB = "create table if not exists " + TABLE_NAME + " ( "
             + C_ID + " integer primary key autoincrement, "
@@ -45,11 +50,12 @@ public class DBHelper extends SQLiteOpenHelper {
             + COST + " text, "
             + DATE + " text)";
 
-    private final String createDB2 = "create table if not exists " + TABLE_NAME2 + " ( "
+    private final String createDB_MAIN = "create table if not exists " + TABLE_NAME_MAIN + " ( "
             + D_NO + " integer primary key autoincrement, "
             + D_TITLE + " text, "
             + D_START_DATE + " text, "
             + D_END_DATE + " text, "
+            + D_IMG + "blob,"
             + D_LOCATION + " text)";
 
     public DBHelper(Context context){
@@ -59,7 +65,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(createDB);
-        db.execSQL(createDB2);
+        db.execSQL(createDB_MAIN);
         db.execSQL(createDB_temp);
     }
 
@@ -72,7 +78,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         db.beginTransaction();
         // Select All Query
-        String selectQuery = "SELECT _id,title,type,description,time,date FROM " + TABLE_NAME;
+        String selectQuery = "SELECT _id,title,cost,type,description,time,date FROM " + TABLE_NAME;
         Cursor cursor = null;
         try {
             cursor = db.rawQuery(selectQuery, null);
@@ -89,7 +95,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db1 = this.getReadableDatabase();
         db1.beginTransaction();
         // Select All Query
-        String selectQuery1 = "SELECT d_no,d_title,d_location,d_start_date,d_end_date FROM " + TABLE_NAME2;
+        String selectQuery1 = "SELECT d_no,d_title,d_location,d_start_date,d_end_date FROM " + TABLE_NAME_MAIN;
         Cursor cursor1 = null;
         try {
             cursor1 = db1.rawQuery(selectQuery1, null);
@@ -112,6 +118,23 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM diary_detail_list;");
         db.execSQL("UPDATE diary_detail_list_temp SET d_title = '"+d_title+"' WHERE d_title is NULL;");
 
+    }
+    //사진 추가
+    public boolean insertimage(String x, Integer i){
+        SQLiteDatabase db = this.getWritableDatabase();
+        try{
+            FileInputStream fs = new FileInputStream(x);
+            byte[] imgbyte = new byte[fs.available()];
+            fs.read(imgbyte);
+            ContentValues contentValues = new ContentValues();
+            contentValues.put ("img", imgbyte);
+            db.insert("img", null, contentValues);
+            fs.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }
