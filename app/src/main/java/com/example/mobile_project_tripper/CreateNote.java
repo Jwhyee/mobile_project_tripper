@@ -65,16 +65,8 @@ public class CreateNote extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(adapter);
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(
-                    AdapterView parent, View view, int position, long id) {
-                if(id == 2){
-                    showToast(getString(R.string.added_alert));
-                    checkBoxAlarm.setEnabled(true);
-                }
-                else {
-                    checkBoxAlarm.setEnabled(false);
-                    checkBoxAlarm.setChecked(false);
-                }
+            public void onItemSelected(AdapterView parent, View view, int position, long id) {
+                checkBoxAlarm.setEnabled(true);
             }
 
             public void onNothingSelected(AdapterView parent) {

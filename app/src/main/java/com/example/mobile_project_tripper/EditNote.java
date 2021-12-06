@@ -64,15 +64,8 @@ public class EditNote extends AppCompatActivity {
         mSpinner.setAdapter(adapter);
         mSpinner.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
-                    public void onItemSelected(
-                            AdapterView parent, View view, int position, long id) {
-                        if (id == 2) {
-                            showToast(getString(R.string.alarm_active));
-                            checkBoxAlarm.setEnabled(true);
-                        } else {
-                            checkBoxAlarm.setEnabled(false);
-                            checkBoxAlarm.setChecked(false);
-                        }
+                    public void onItemSelected(AdapterView parent, View view, int position, long id) {
+                        checkBoxAlarm.setEnabled(true);
                     }
 
                     public void onNothingSelected(AdapterView parent) {
@@ -200,6 +193,7 @@ public class EditNote extends AppCompatActivity {
                 }
 
                 db.update(mDBHelper.TABLE_NAME_TEMP, cv, mDBHelper.C_ID + "=" + id, null);
+                db.update(mDBHelper.TABLE_NAME, cv, mDBHelper.C_ID + "=" + id, null);
 
                 Intent openMainScreen = new Intent(EditNote.this, WriteView.class);
                 openMainScreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

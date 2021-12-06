@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,7 +64,6 @@ public class ViewNote extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final long id = getIntent().getExtras().getLong(getString(R.string.rowID));
-
         switch (item.getItemId()) {
             case R.id.action_back:
                 Intent openMainActivity = new Intent(this, WriteView.class);
@@ -77,17 +77,18 @@ public class ViewNote extends AppCompatActivity {
                 return true;
 
             case R.id.action_discard:
-                AlertDialog.Builder builder = new AlertDialog.Builder(ViewNote.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder
                         .setTitle(getString(R.string.delete_title))
                         .setMessage(getString(R.string.delete_message))
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                int id = getIntent().getExtras().getInt(getString(R.string.rodID));
                                 db.delete(DBHelper.TABLE_NAME_TEMP, DBHelper.C_ID + "=" + id, null);
+                                db.delete(DBHelper.TABLE_NAME, DBHelper.C_ID + "=" + id, null);
                                 db.close();
-                                Intent openMainActivity = new Intent(ViewNote.this, WriteView.class);
+                                Intent openMainActivity = new Intent(getApplicationContext(), WriteView.class);
+                                Toast.makeText(getApplicationContext(), "삭제 됐습니다", Toast.LENGTH_SHORT).show();
                                 startActivity(openMainActivity);
 
                             }
