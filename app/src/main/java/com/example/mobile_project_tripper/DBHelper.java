@@ -84,6 +84,23 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return cursor;
     }
+    // 메인 엑티비티에서 뿌려지는 DB
+    public Cursor LoadSQLiteDBCursor2() {
+        SQLiteDatabase db1 = this.getReadableDatabase();
+        db1.beginTransaction();
+        // Select All Query
+        String selectQuery1 = "SELECT d_no,d_title,d_location,d_start_date,d_end_date FROM " + TABLE_NAME2;
+        Cursor cursor1 = null;
+        try {
+            cursor1 = db1.rawQuery(selectQuery1, null);
+            db1.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db1.endTransaction();
+        }
+        return cursor1;
+    }
 
     public void insert_diary(String D_TITLE, String D_START_DATE, String D_END_DATE, String D_LOCATION){
         SQLiteDatabase db = getWritableDatabase();
