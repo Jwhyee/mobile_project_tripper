@@ -2,6 +2,7 @@ package com.example.mobile_project_tripper;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,10 +60,9 @@ public class ListViewAdapter_main extends RecyclerView.Adapter<RecyclerView.View
                 public void onClick(View v) {
                     Position1 = getAdapterPosition();
                     Intent intent = new Intent(mContext1, DetailView.class);
-                    intent.putExtra(mContext1.getString(R.string.d_title),IvList1.get(Position1).getTitle());
                     intent.putExtra(mContext1.getString(R.string.row_id),IvList1.get(Position1).getId());
+                    intent.putExtra("d_title", IvList1.get(Position1).getTitle());
                     Log.e("rowID", String.valueOf(IvList1.get(Position1).getId()));
-                    Log.e("diary_title", String.valueOf(IvList1.get(Position1).getTitle()));
                     mContext1.startActivity(intent);
                 }
             });

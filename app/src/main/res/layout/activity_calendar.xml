@@ -27,7 +27,7 @@
                 android:textSize="10pt" />
 
             <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-                android:id="@+id/calendarView"
+                android:id="@+id/mtr_c"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:mcv_selectionColor="#4D7EE2"
