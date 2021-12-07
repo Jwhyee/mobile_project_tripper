@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
             cursor1.moveToFirst();
             System.out.println("SQLiteDB 개수 = " + cursor1.getCount());
             while (!cursor1.isAfterLast()) {
-                addGroupItem(cursor1.getString(0),cursor1.getString(1),
-                        cursor1.getString(2),cursor1.getString(3));
+                addGroupItem(cursor1.getLong(0),cursor1.getString(1),cursor1.getString(2),
+                        cursor1.getString(3),cursor1.getString(4));
                 cursor1.moveToNext();
             }
             db.setTransactionSuccessful();
@@ -88,8 +88,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void addGroupItem(String title, String Locate, String sDate, String eDate){
+    public void addGroupItem(Long uid, String title, String Locate, String sDate, String eDate){
         DiaryItem_main item = new DiaryItem_main();
+        item.setId(uid);
         item.setTitle(title);
         item.setLocate(Locate);
         item.setStartDate(sDate);

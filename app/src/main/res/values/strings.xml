@@ -32,6 +32,7 @@
     <string name="rodID">rowID</string>
     <string name="rowID">rowID</string>
     <string name="row_id">rowID</string>
+    <string name="d_title">diary_title</string>
     <string name="intent_row_id">rowID</string>
     <string name="row_id_long">rowID</string>
     <string name="alarm_active">An Alert can be added!</string>

@@ -24,17 +24,7 @@
                 android:layout_weight="3"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/d_no_contain"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="TextView"
-                    android:textColor="#000000"
-                    android:textSize="20sp" />
+
 
                 <TextView
                     android:id="@+id/d_title_contain"
@@ -48,6 +38,19 @@
                     android:text="TextView"
                     android:textColor="#000000"
                     android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/d_no_contain"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="TextView"
+                    android:visibility="gone"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/d_location_contain"

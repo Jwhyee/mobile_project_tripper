@@ -58,14 +58,16 @@ public class ListViewAdapter_main extends RecyclerView.Adapter<RecyclerView.View
                 @Override
                 public void onClick(View v) {
                     Position1 = getAdapterPosition();
-                    Intent intent = new Intent(mContext1, ViewNote.class);
-                    intent.putExtra(mContext1.getString(R.string.row_id),IvList1.get(Position1).getUid());
-                    Log.e("rowID", String.valueOf(IvList1.get(Position1).getUid()));
+                    Intent intent = new Intent(mContext1, DetailView.class);
+                    intent.putExtra(mContext1.getString(R.string.d_title),IvList1.get(Position1).getTitle());
+                    intent.putExtra(mContext1.getString(R.string.row_id),IvList1.get(Position1).getId());
+                    Log.e("rowID", String.valueOf(IvList1.get(Position1).getId()));
+                    Log.e("diary_title", String.valueOf(IvList1.get(Position1).getTitle()));
                     mContext1.startActivity(intent);
                 }
             });
         }
-
+        
         public void onBind1(DiaryItem_main item) {
             d_title_contain.setText(item.getTitle());
             d_location_contain.setText(item.getLocate());

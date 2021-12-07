@@ -6,16 +6,15 @@ public class DiaryItem_main {
     private String Locate; // 메모 타입
     private String StartDate; // 작성일자
     private String EndDate; // 비용
-    private Long number;
 
     public DiaryItem_main() {
     }
 
-    public Long getUid() {
+    public Long getId() {
         return uid;
     }
 
-    public void setUid(Long uid) {
+    public void setId(Long uid) {
         this.uid = uid;
     }
 
@@ -49,13 +48,5 @@ public class DiaryItem_main {
 
     public void setEndDate(String EndDate) {
         this.EndDate = EndDate;
-    }
-
-    public Long getNumber() {
-        return number;
-    }
-
-    public void setNumber(Long number) {
-        this.number = number;
     }
 }
