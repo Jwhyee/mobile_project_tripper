@@ -58,10 +58,10 @@ public class DetailView extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final long id = getIntent().getExtras().getLong(getString(R.string.rowID));
-        final String title = getIntent().getExtras().getString(String.valueOf(R.string.d_title));
+        final String title = getIntent().getStringExtra("d_title");
         switch (item.getItemId()) {
             case R.id.action_back:
-                Intent openMainActivity = new Intent(this, WriteView.class);
+                Intent openMainActivity = new Intent(this, MainActivity.class);
                 startActivity(openMainActivity);
                 return true;
 
