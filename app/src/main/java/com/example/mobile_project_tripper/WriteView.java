@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,40 +36,43 @@ public class WriteView extends AppCompatActivity {
 
     EditText title, location;
     TextView start_date, end_date;
-    Uri uri;
 
     private TextView textView_start_date;
     private TextView textView_end_date;
     private DatePickerDialog.OnDateSetListener callbackMethod_start;
     private DatePickerDialog.OnDateSetListener callbackMethod_end;
-
-    static final int REQUEST_CODE = 1;
-
-    private final int GET_GALLERY_IMAGE = 200;
+    private static final int PICK_IMAGE = 100;
     private ImageView imageview;
 
     private RecyclerView listView;
     private ArrayList<DiaryItem> diaryItemList = new ArrayList<>(); // SQLite에서 가져온 원본 데이터 리스트
+
+    public static Context mContext;
     RecyclerView.Adapter listViewAdapter; // ListViewAdapter 대신 RecyclerView.Adapter
-    RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_view);
 
-        imageview = (ImageView)findViewById(R.id.imageView);
+        title = findViewById(R.id.title);
+        location = findViewById(R.id.location);
+        start_date = findViewById(R.id.start_date);
+        end_date = findViewById(R.id.end_date);
+
+
+        mDBHelper = new DBHelper(this);
+
+        imageview = (ImageView)findViewById(R.id.imageView); // 이미지 불러오기
         imageview.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent. setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(intent, GET_GALLERY_IMAGE);
+                Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://media/internal/images/media"));
+                startActivityForResult(intent, PICK_IMAGE);
             }
         });
 
-        this.InitializeView();
-        this.InitializeListener();
+        this.InitializeView(); // 캘린더 뷰 사용
+        this.InitializeListener(); // 캘린더 뷰 사용
 
         context = this.getBaseContext();
 
@@ -85,8 +89,7 @@ public class WriteView extends AppCompatActivity {
             cursor.moveToFirst();
             System.out.println("SQLiteDB 개수 = " + cursor.getCount());
             while (!cursor.isAfterLast()) {
-                addGroupItem(cursor.getLong(0),cursor.getString(1),cursor.getString(2),
-                        cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6));
+                addGroupItem(cursor.getLong(0),cursor.getString(1),cursor.getString(2), cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6));
                 cursor.moveToNext();
             }
             db.setTransactionSuccessful();
@@ -111,9 +114,38 @@ public class WriteView extends AppCompatActivity {
         setInit(); // insert_diary 및 save_btn 활성화
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE){
+            Uri uri = data.getData();
+            imageview.setImageURI(uri);
+            String x = getPath(uri);
+            if(mDBHelper.insert_image(x)){
+                Toast.makeText(getApplicationContext(), "사진 등록에 성공 했습니다.", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getApplicationContext(), "사진 등록에 실패 했습니다.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private String getPath(Uri uri) {
+        if(uri == null) return null;
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        if(cursor!= null){
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }
+        return uri.getPath();
+    }
+
     private void setInit() {
         mDBHelper = new DBHelper(this);
         save_btn = findViewById(R.id.save_btn);
+        Intent intent = getIntent();
+
 
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,56 +163,6 @@ public class WriteView extends AppCompatActivity {
             }
         });
     }
-    /*
-    public void onClickButton1(View view){
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-            startActivityForResult(intent, REQUEST_CODE);
-        }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-
-            Uri selectedImageUri = data.getData();
-            imageview.setImageURI(selectedImageUri);
-            uri = data.getData();
-
-            ContentValues values = new ContentValues();
-            values.put("img", uri.toString());
-            db.insert("diary_detail_list",null,values);
-        }
-    }*/
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-
-            Uri selectedImageUri = data.getData();
-            imageview.setImageURI(selectedImageUri);
-
-        }
-
-    }
-
-
-
-
-    public String getPath(Uri uri){
-        if(uri == null) return null;
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = managedQuery(uri, projection, null, null, null );
-        if(cursor!= null){
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        }
-        return uri.getPath();
-
-    }
 
     public void InitializeView()
     {
@@ -195,13 +177,15 @@ public class WriteView extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
             {
-                textView_start_date.setText(year + "년" + monthOfYear + "월" + dayOfMonth + "일");
+                Integer real_month = monthOfYear+1;
+                textView_start_date.setText(year + "년" + real_month + "월" + dayOfMonth + "일");
             }
         };
         callbackMethod_end = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                textView_end_date.setText(year + "년" + monthOfYear + "월" + dayOfMonth + "일");
+                Integer real_month = monthOfYear+1;
+                textView_end_date.setText(year + "년" + real_month + "월" + dayOfMonth + "일");
             }
         };
     }
@@ -255,7 +239,4 @@ public class WriteView extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
-
 }
