@@ -1,7 +1,6 @@
 package com.example.mobile_project_tripper;
 
 import android.app.DatePickerDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,6 +35,8 @@ public class WriteView extends AppCompatActivity {
     EditText title, location;
     TextView start_date, end_date;
 
+    Intent serviceIntent;
+
     private TextView textView_start_date;
     private TextView textView_end_date;
     private DatePickerDialog.OnDateSetListener callbackMethod_start;
@@ -47,19 +47,18 @@ public class WriteView extends AppCompatActivity {
     private RecyclerView listView;
     private ArrayList<DiaryItem> diaryItemList = new ArrayList<>(); // SQLite에서 가져온 원본 데이터 리스트
 
-    public static Context mContext;
     RecyclerView.Adapter listViewAdapter; // ListViewAdapter 대신 RecyclerView.Adapter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_view);
+        startService();
 
         title = findViewById(R.id.title);
         location = findViewById(R.id.location);
         start_date = findViewById(R.id.start_date);
         end_date = findViewById(R.id.end_date);
-
 
         mDBHelper = new DBHelper(this);
 
@@ -114,6 +113,24 @@ public class WriteView extends AppCompatActivity {
         setInit(); // insert_diary 및 save_btn 활성화
     }
 
+    /**
+     * 알림서비스 실행
+     */
+    public void startService()
+    {
+        serviceIntent = new Intent(this, MyService.class);
+        startService(serviceIntent);
+    }
+
+    /**
+     * 알림서비스 중지
+     */
+    public void stopService()
+    {
+        serviceIntent = new Intent(this, MyService.class);
+        stopService(serviceIntent);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
@@ -150,11 +167,12 @@ public class WriteView extends AppCompatActivity {
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                stopService();
+                Toast.makeText(getApplicationContext(), "일기 추가 성공", Toast.LENGTH_SHORT).show();
                 title = (EditText) findViewById(R.id.title);
                 start_date = (TextView) findViewById(R.id.start_date);
                 end_date = (TextView) findViewById(R.id.end_date);
                 location = (EditText) findViewById(R.id.location);
-                imageview = (ImageView)findViewById(R.id.imageView);
 
                 mDBHelper.insert_diary(title.getText().toString(), start_date.getText().toString(), end_date.getText().toString(),location.getText().toString());
                 mDBHelper.d_insert(title.getText().toString());
