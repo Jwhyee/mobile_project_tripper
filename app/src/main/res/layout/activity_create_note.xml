@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txttitle"
                     android:maxLength="25"
-                    android:hint="소제목을 입력해주세요"
+                    android:text="@string/txt_edit_hint"
                     android:layout_below="@+id/btnBack"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
@@ -86,7 +86,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/description"
-                    android:hint="설명을 적어주세요"
+                    android:text="@string/detail_hint"
                     android:layout_below="@+id/txttitle"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
@@ -107,7 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="이동수단을 선택해주세요"
+                    android:text="@string/type_note"
                     android:id="@+id/txtNoteType"
                     android:layout_below="@+id/description"
                     android:layout_alignParentLeft="true"
@@ -133,7 +133,7 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="날짜보기"
+                    android:text="@string/set_alert"
                     android:id="@+id/checkBox"
                     android:layout_below="@+id/spinnerNoteType"
                     android:layout_alignParentLeft="true"
@@ -146,7 +146,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="날짜를 선택해주세요"
+                    android:text="@string/textview_date"
                     android:id="@+id/txtDate" />
 
                 <DatePicker
@@ -160,7 +160,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="시간을 선택해주세요"
+                    android:text="@string/txt_time"
                     android:id="@+id/txtTime" />
 
                 <TimePicker
@@ -169,7 +169,6 @@
                     android:id="@+id/timePicker"
                     android:layout_gravity="center_horizontal" />
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 

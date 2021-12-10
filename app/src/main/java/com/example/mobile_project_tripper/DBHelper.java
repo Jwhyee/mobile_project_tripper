@@ -20,7 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String DETAIL = "description";
     public static final String TIME = "time";
     public static final String DATE = "date";
-    public static final String D_IMG = "img";
+
 
     public static final int DATABASE_VERSION = 1;
     public static final String D_NO = "d_no";
@@ -28,7 +28,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String D_START_DATE = "d_start_date";
     public static final String D_END_DATE = "d_end_date";
     public static final String D_LOCATION = "d_location";
+    public static final String D_IMG = "d_img";
     public static final String TABLE_NAME_MAIN = "diary_detail";
+
+    public static final String TABLE_NAME_IMG = "images";
 
     private final String createDB = "create table if not exists " + TABLE_NAME + " ( "
             + C_ID + " integer primary key autoincrement, "
@@ -55,8 +58,11 @@ public class DBHelper extends SQLiteOpenHelper {
             + D_TITLE + " text, "
             + D_START_DATE + " text, "
             + D_END_DATE + " text, "
-            + D_IMG + "blob,"
+            + D_IMG + " blob, "
             + D_LOCATION + " text)";
+    private final String carteDB_IMG = "create table if not exists " + TABLE_NAME_IMG + " ("
+            + D_IMG + " blob, "
+            + D_NO + " integer)";
 
     public DBHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -67,6 +73,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(createDB);
         db.execSQL(createDB_MAIN);
         db.execSQL(createDB_temp);
+        db.execSQL(carteDB_IMG);
     }
 
     @Override
@@ -90,6 +97,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return cursor;
     }
+
     // 메인 엑티비티에서 뿌려지는 DB
     public Cursor LoadSQLiteDBCursor2() {
         SQLiteDatabase db1 = this.getReadableDatabase();
@@ -113,22 +121,26 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO diary_detail (D_TITLE, D_START_DATE, D_END_DATE, D_LOCATION) VALUES ('"+ D_TITLE +"',  '"+ D_START_DATE +"' , '"+ D_END_DATE +"', '"+D_LOCATION+"');");
     }
 
-    public void d_insert(String d_title ){
+    public void d_insert(String d_title){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM diary_detail_list;");
+        db.execSQL("UPDATE images SET d_no = (SELECT d_no FROM diary_detail order by d_no desc limit 1);" );
         db.execSQL("UPDATE diary_detail_list_temp SET d_title = '"+d_title+"' WHERE d_title is NULL;");
+        db.execSQL("UPDATE diary_detail SET d_img = (SELECT d_img FROM images) WHERE d_no = (SELECT d_no FROM images) AND d_img IS NULL;");
+        db.execSQL("DELETE FROM images");
 
     }
     //사진 추가
-    public boolean insertimage(String x, Integer i){
-        SQLiteDatabase db = this.getWritableDatabase();
+    public Boolean insert_image(String x){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("delete from images;");
         try{
             FileInputStream fs = new FileInputStream(x);
             byte[] imgbyte = new byte[fs.available()];
             fs.read(imgbyte);
             ContentValues contentValues = new ContentValues();
-            contentValues.put ("img", imgbyte);
-            db.insert("img", null, contentValues);
+            contentValues.put("d_img", imgbyte);
+            db.insert("images", null, contentValues);
             fs.close();
             return true;
         } catch (IOException e) {
