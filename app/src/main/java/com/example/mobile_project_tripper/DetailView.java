@@ -54,27 +54,27 @@ public class DetailView extends AppCompatActivity {
         }
 
         //
-        listView_detail = findViewById(R.id.detail_diary_list);
+        listView_detail = (RecyclerView)findViewById(R.id.detail_diary_list);
         listView_detail.setHasFixedSize(true);
         diaryItemList_detail.clear(); // 가져온 데이터 초기화
         dbs.beginTransaction();
 
-        Cursor cursor1 = dbhelp.LoadSQLiteDBCursor3(title);
+        Cursor cursor2 = dbhelp.LoadSQLiteDBCursor3(title);
 
         try {
-            cursor1.moveToFirst();
-            System.out.println("SQLiteDB 개수 = " + cursor1.getCount());
-            while (!cursor1.isAfterLast()) {
-                addGroupItem(cursor1.getString(0),cursor1.getString(1),cursor1.getString(2),
-                        cursor1.getString(3),cursor1.getString(4));
-                cursor1.moveToNext();
+            cursor2.moveToFirst();
+            System.out.println("SQLiteDB 개수 = " + cursor2.getCount());
+            while (!cursor2.isAfterLast()) {
+                addGroupItem(cursor2.getString(0),cursor2.getString(1),cursor2.getString(2),
+                        cursor2.getString(3),cursor2.getString(4));
+                cursor2.moveToNext();
             }
             dbs.setTransactionSuccessful();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (cursor1 != null) {
-                cursor1.close();
+            if (cursor2 != null) {
+                cursor2.close();
                 dbs.endTransaction();
             }
         }

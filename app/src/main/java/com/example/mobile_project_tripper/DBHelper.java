@@ -122,7 +122,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db3 = this.getReadableDatabase();
         db3.beginTransaction();
         // Select All Query
-        String selectQuery3 = "SELECT d_title,title,type,time,cost FROM " + TABLE_NAME_TEMP + "WHERE" + key;
+        String selectQuery3 = "SELECT * FROM diary_detail_list_temp WHERE d_title ='"+key+"';";
         Cursor cursor3 = null;
         try {
             cursor3 = db3.rawQuery(selectQuery3, null);

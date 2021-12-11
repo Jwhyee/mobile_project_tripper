@@ -30,7 +30,7 @@ public class ListViewAdapter_detail extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder2, int position2) {
         // ListView의 getView 부분을 담당하는 메소드
-        ((ViewHolder2) holder2).onBind1(IvList2.get(position2));
+        ((ViewHolder2) holder2).onBind2(IvList2.get(position2));
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ListViewAdapter_detail extends RecyclerView.Adapter<RecyclerView.Vi
             */
         }
         
-        public void onBind1(DiaryItem_detail item) {
+        public void onBind2(DiaryItem_detail item) {
             d_title.setText(item.getTitle());
             detail_time.setText(item.getTime());
             detail_subtitle.setText(item.getSubtitle());

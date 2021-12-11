@@ -268,6 +268,7 @@ public class WriteView extends AppCompatActivity {
                 start_date = (TextView) findViewById(R.id.start_date);
                 end_date = (TextView) findViewById(R.id.end_date);
                 location = (EditText) findViewById(R.id.location);
+                imageview = (ImageView) findViewById(R.id.imageView);
 
                 Intent openCreateNote = new Intent(WriteView.this, CreateNote.class);
                 openCreateNote.putExtra("title", title.getText().toString());
