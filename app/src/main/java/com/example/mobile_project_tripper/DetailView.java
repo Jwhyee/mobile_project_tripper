@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,19 +28,36 @@ public class DetailView extends AppCompatActivity {
         dbs = dbhelp.getWritableDatabase();
 
         Cursor cursor = dbs.rawQuery("select * from " + dbhelp.TABLE_NAME_MAIN + " where " + dbhelp.D_NO + "=" + rid, null);
-        TextView d_title = (TextView) findViewById(R.id.diary_title);
-        TextView d_start_day = (TextView) findViewById(R.id.diary_s_day);
-        TextView d_end_day = (TextView) findViewById(R.id.diary_e_day);
-        TextView d_location = (TextView) findViewById(R.id.diary_location);
+        TextView d_title = findViewById(R.id.diary_title);
+        TextView d_start_day = findViewById(R.id.diary_s_day);
+        TextView d_end_day = findViewById(R.id.diary_e_day);
+        TextView d_location = findViewById(R.id.diary_location);
+        ImageView diary_img = findViewById(R.id.diary_img);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 d_title.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.D_TITLE)));
                 d_start_day.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.D_START_DATE)));
                 d_end_day.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.D_END_DATE)));
                 d_location.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.D_LOCATION)));
+                diary_img.setImageBitmap(dbhelp.getImage(rid));
             }
             cursor.close();
         }
+        /*
+        Cursor cursor1 = dbs.rawQuery("select * from " + dbhelp.TABLE_NAME_TEMP + " where " + dbhelp.D_TITLE + "=" + title, null);
+        TextView detail_time = (TextView) findViewById(R.id.detail_time);
+        TextView detail_subtitle = (TextView) findViewById(R.id.detail_subtitle);
+        TextView detail_type = (TextView) findViewById(R.id.detail_type);
+        if (cursor1 != null) {
+            if (cursor1.moveToFirst()) {
+                detail_subtitle.setText(cursor1.getString(cursor1.getColumnIndexOrThrow(dbhelp.TITLE)));
+                detail_time.setText(cursor1.getString(cursor1.getColumnIndexOrThrow(dbhelp.TIME)));
+                detail_type.setText(cursor1.getString(cursor1.getColumnIndexOrThrow(dbhelp.TYPE)));
+            }
+            cursor.close();
+        }
+        */
+
     }
 
     @Override

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -147,6 +149,18 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
             return false;
         }
+    }
+
+    // 사진 뿌리기
+    public Bitmap getImage(Long d_no){
+        SQLiteDatabase db = getWritableDatabase();
+        Bitmap bt = null;
+        Cursor cursor = db.rawQuery("select * from diary_detail where d_no = ?", new String[]{String.valueOf(d_no)});
+        if(cursor.moveToNext()){
+            byte[] img = cursor.getBlob(4 );
+            bt = BitmapFactory.decodeByteArray(img, 0, img.length);
+        }
+        return bt;
     }
 
 }
