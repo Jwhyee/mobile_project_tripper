@@ -28,12 +28,12 @@ public class ViewNote extends AppCompatActivity {
         db = dbHelper.getWritableDatabase();
 
         Cursor cursor = db.rawQuery("select * from " + dbHelper.TABLE_NAME_TEMP + " where " + dbHelper.C_ID + "=" + id, null);
-        TextView title = (TextView) findViewById(R.id.title);
-        TextView cost = (TextView) findViewById(R.id.cost);
-        TextView detail = (TextView) findViewById(R.id.detail);
-        TextView notetype = (TextView) findViewById(R.id.note_type_ans);
-        TextView time = (TextView) findViewById(R.id.alertvalue);
-        TextView date = (TextView) findViewById(R.id.datevalue);
+        TextView title = findViewById(R.id.title);
+        TextView cost = findViewById(R.id.cost);
+        TextView detail = findViewById(R.id.detail);
+        TextView notetype = findViewById(R.id.note_type_ans);
+        TextView time = findViewById(R.id.alertvalue);
+        TextView date = findViewById(R.id.datevalue);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 title.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.TITLE)));

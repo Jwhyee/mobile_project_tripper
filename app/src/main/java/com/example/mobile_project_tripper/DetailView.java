@@ -13,10 +13,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 public class DetailView extends AppCompatActivity {
     SQLiteDatabase dbs;
     DBHelper dbhelp;
+    private RecyclerView listView_detail;
+    private ArrayList<DiaryItem_detail> diaryItemList_detail = new ArrayList<>(); // SQLite에서 가져온 원본 데이터 리스트
+    RecyclerView.Adapter listViewAdapter_detail; // ListViewAdapter 대신 RecyclerView.Adapter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +31,10 @@ public class DetailView extends AppCompatActivity {
         setContentView(R.layout.activity_detail_view);
 
         final long rid = getIntent().getExtras().getLong(getString(R.string.row_id));
+        final String title = getIntent().getStringExtra("d_title");
         dbhelp = new DBHelper(this);
         dbs = dbhelp.getWritableDatabase();
+
 
         Cursor cursor = dbs.rawQuery("select * from " + dbhelp.TABLE_NAME_MAIN + " where " + dbhelp.D_NO + "=" + rid, null);
         TextView d_title = findViewById(R.id.diary_title);
@@ -43,21 +52,51 @@ public class DetailView extends AppCompatActivity {
             }
             cursor.close();
         }
-        /*
-        Cursor cursor1 = dbs.rawQuery("select * from " + dbhelp.TABLE_NAME_TEMP + " where " + dbhelp.D_TITLE + "=" + title, null);
-        TextView detail_time = (TextView) findViewById(R.id.detail_time);
-        TextView detail_subtitle = (TextView) findViewById(R.id.detail_subtitle);
-        TextView detail_type = (TextView) findViewById(R.id.detail_type);
-        if (cursor1 != null) {
-            if (cursor1.moveToFirst()) {
-                detail_subtitle.setText(cursor1.getString(cursor1.getColumnIndexOrThrow(dbhelp.TITLE)));
-                detail_time.setText(cursor1.getString(cursor1.getColumnIndexOrThrow(dbhelp.TIME)));
-                detail_type.setText(cursor1.getString(cursor1.getColumnIndexOrThrow(dbhelp.TYPE)));
-            }
-            cursor.close();
-        }
-        */
 
+        //
+        listView_detail = findViewById(R.id.detail_diary_list);
+        listView_detail.setHasFixedSize(true);
+        diaryItemList_detail.clear(); // 가져온 데이터 초기화
+        dbs.beginTransaction();
+
+        Cursor cursor1 = dbhelp.LoadSQLiteDBCursor3(title);
+
+        try {
+            cursor1.moveToFirst();
+            System.out.println("SQLiteDB 개수 = " + cursor1.getCount());
+            while (!cursor1.isAfterLast()) {
+                addGroupItem(cursor1.getString(0),cursor1.getString(1),cursor1.getString(2),
+                        cursor1.getString(3),cursor1.getString(4));
+                cursor1.moveToNext();
+            }
+            dbs.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor1 != null) {
+                cursor1.close();
+                dbs.endTransaction();
+            }
+        }
+
+        // 레이아웃 매니저 세팅
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        listView_detail.setLayoutManager(layoutManager);
+
+        listViewAdapter_detail = new ListViewAdapter_detail(diaryItemList_detail, this); // Adapter 생성
+        listView_detail.setAdapter(listViewAdapter_detail); // 어댑터를 리스트뷰에 세팅
+        //
+    }
+    public void addGroupItem(String d_title, String subtitle, String type, String time, String cost){
+        DiaryItem_detail item = new DiaryItem_detail();
+        item.setTitle(d_title);
+        item.setSubtitle(subtitle);
+        item.setType(type);
+        item.setTime(time);
+        item.setCost(cost);
+
+        diaryItemList_detail.add(item);
     }
 
     @Override

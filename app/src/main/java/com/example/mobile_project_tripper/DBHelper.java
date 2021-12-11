@@ -102,20 +102,37 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // 메인 엑티비티에서 뿌려지는 DB
     public Cursor LoadSQLiteDBCursor2() {
-        SQLiteDatabase db1 = this.getReadableDatabase();
-        db1.beginTransaction();
+        SQLiteDatabase db2 = this.getReadableDatabase();
+        db2.beginTransaction();
         // Select All Query
-        String selectQuery1 = "SELECT d_no,d_title,d_location,d_start_date,d_end_date FROM " + TABLE_NAME_MAIN;
-        Cursor cursor1 = null;
+        String selectQuery2 = "SELECT d_no,d_title,d_location,d_start_date,d_end_date FROM " + TABLE_NAME_MAIN;
+        Cursor cursor2 = null;
         try {
-            cursor1 = db1.rawQuery(selectQuery1, null);
-            db1.setTransactionSuccessful();
+            cursor2 = db2.rawQuery(selectQuery2, null);
+            db2.setTransactionSuccessful();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            db1.endTransaction();
+            db2.endTransaction();
         }
-        return cursor1;
+        return cursor2;
+    }
+
+    public Cursor LoadSQLiteDBCursor3(String key) {
+        SQLiteDatabase db3 = this.getReadableDatabase();
+        db3.beginTransaction();
+        // Select All Query
+        String selectQuery3 = "SELECT d_title,title,type,time,cost FROM " + TABLE_NAME_TEMP + "WHERE" + key;
+        Cursor cursor3 = null;
+        try {
+            cursor3 = db3.rawQuery(selectQuery3, null);
+            db3.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db3.endTransaction();
+        }
+        return cursor3;
     }
 
     public void insert_diary(String D_TITLE, String D_START_DATE, String D_END_DATE, String D_LOCATION){
