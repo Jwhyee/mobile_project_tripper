@@ -35,12 +35,30 @@ public class CreateNote extends AppCompatActivity {
     TimePicker pickerTime;
     TextView time;
     TextView date;
-    CheckBox checkBoxAlarm;
+    TextView title_view, location_view, start_date_view, end_date_view;
+    CheckBox checkBoxTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note);
+
+        Intent openCreateNote = getIntent();
+        String title = getIntent().getStringExtra("title");
+        String location = getIntent().getStringExtra("location");
+        String start_date = getIntent().getStringExtra("start_date");
+        String end_date = getIntent().getStringExtra("end_date");
+
+        title_view = (TextView) findViewById(R.id.title_view);
+        location_view = (TextView) findViewById(R.id.location_view);
+        start_date_view = (TextView) findViewById(R.id.start_date_view);
+        end_date_view = (TextView) findViewById(R.id.end_date_view);
+
+        title_view.setText(title);
+        location_view.setText(location);
+        start_date_view.setText(start_date);
+        end_date_view.setText(end_date);
+
 
         mDBHelper = new DBHelper(this);
         db = mDBHelper.getWritableDatabase();
@@ -53,27 +71,26 @@ public class CreateNote extends AppCompatActivity {
         pickerTime = (TimePicker) findViewById(R.id.timePicker);
         time = (TextView) findViewById(R.id.txtTime);
         date = (TextView) findViewById(R.id.txtDate);
-        checkBoxAlarm = (CheckBox) findViewById(R.id.checkBox);
+        checkBoxTime = (CheckBox) findViewById(R.id.checkBox);
 
         pickerDate.setVisibility(View.INVISIBLE);
         pickerTime.setVisibility(View.INVISIBLE);
         time.setVisibility(View.INVISIBLE);
         date.setVisibility(View.INVISIBLE);
 
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(
-                this, R.array.note_type, android.R.layout.simple_spinner_item);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.note_type, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(adapter);
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView parent, View view, int position, long id) {
-                checkBoxAlarm.setEnabled(true);
+                checkBoxTime.setEnabled(true);
             }
 
             public void onNothingSelected(AdapterView parent) {
             }
         });
 
-        checkBoxAlarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        checkBoxTime.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked == true){
@@ -126,7 +143,7 @@ public class CreateNote extends AppCompatActivity {
                 cv.put(mDBHelper.TYPE, type);
                 cv.put(mDBHelper.TIME, getString(R.string.Not_Set));
 
-                if (checkBoxAlarm.isChecked()){
+                if (checkBoxTime.isChecked()){
                     Calendar calender = Calendar.getInstance();
                     calender.clear();
                     calender.set(Calendar.MONTH, pickerDate.getMonth());
@@ -149,6 +166,12 @@ public class CreateNote extends AppCompatActivity {
                 db.insert(mDBHelper.TABLE_NAME_TEMP, null, cv);
 
                 Intent openMainScreen = new Intent(this, WriteView.class);
+
+                openMainScreen.putExtra("title", title_view.getText().toString());
+                openMainScreen.putExtra("location", location_view.getText().toString());
+                openMainScreen.putExtra("start_date", start_date_view.getText().toString());
+                openMainScreen.putExtra("end_date", end_date_view.getText().toString());
+
                 openMainScreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(openMainScreen);
                 return true;

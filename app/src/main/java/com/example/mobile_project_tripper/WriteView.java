@@ -53,12 +53,25 @@ public class WriteView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_view);
+        Intent openMainActivity = getIntent();
+        String title_view = getIntent().getStringExtra("title");
+        String location_view = getIntent().getStringExtra("location");
+        String start_date_view = getIntent().getStringExtra("start_date");
+        String end_date_view = getIntent().getStringExtra("end_date");
+
+
         startService();
 
         title = findViewById(R.id.title);
         location = findViewById(R.id.location);
         start_date = findViewById(R.id.start_date);
         end_date = findViewById(R.id.end_date);
+
+        title.setText(title_view);
+        location.setText(location_view);
+        start_date.setText(start_date_view);
+        end_date.setText(end_date_view);
+
 
         mDBHelper = new DBHelper(this);
 
@@ -178,6 +191,7 @@ public class WriteView extends AppCompatActivity {
                 mDBHelper.d_insert(title.getText().toString());
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -249,7 +263,18 @@ public class WriteView extends AppCompatActivity {
 
         switch(item.getItemId()) {
             case R.id.action_new:
+
+                title = (EditText) findViewById(R.id.title);
+                start_date = (TextView) findViewById(R.id.start_date);
+                end_date = (TextView) findViewById(R.id.end_date);
+                location = (EditText) findViewById(R.id.location);
+
                 Intent openCreateNote = new Intent(WriteView.this, CreateNote.class);
+                openCreateNote.putExtra("title", title.getText().toString());
+                openCreateNote.putExtra("location", location.getText().toString());
+                openCreateNote.putExtra("start_date", start_date.getText().toString());
+                openCreateNote.putExtra("end_date", end_date.getText().toString());
+
                 startActivity(openCreateNote);
                 return true;
 

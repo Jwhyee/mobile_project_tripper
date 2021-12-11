@@ -36,7 +36,7 @@ public class EditNote extends AppCompatActivity {
     TimePicker pickerTime;
     TextView time;
     TextView date;
-    CheckBox checkBoxAlarm;
+    CheckBox checkBoxTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class EditNote extends AppCompatActivity {
         pickerTime = (TimePicker) findViewById(R.id.timePicker2);
         time = (TextView) findViewById(R.id.txt_selecttime);
         date = (TextView) findViewById(R.id.txt_selectdate);
-        checkBoxAlarm = (CheckBox) findViewById(R.id.chkbox);
+        checkBoxTime = (CheckBox) findViewById(R.id.chkbox);
 
         final long id = getIntent().getExtras().getLong(getString(R.string.row_id_log));
 
@@ -65,7 +65,7 @@ public class EditNote extends AppCompatActivity {
         mSpinner.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(AdapterView parent, View view, int position, long id) {
-                        checkBoxAlarm.setEnabled(true);
+                        checkBoxTime.setEnabled(true);
                     }
 
                     public void onNothingSelected(AdapterView parent) {
@@ -82,28 +82,28 @@ public class EditNote extends AppCompatActivity {
                 mDescriptionText.setText(cursor.getString(cursor.getColumnIndexOrThrow(mDBHelper.DETAIL)));
                 if (cursor.getString(cursor.getColumnIndexOrThrow(mDBHelper.TYPE)).equals(mSpinner.getItemAtPosition(0))) {
                     mSpinner.setSelection(0);
-                    checkBoxAlarm.setChecked(false);
-                    checkBoxAlarm.setEnabled(false);
+                    checkBoxTime.setChecked(false);
+                    checkBoxTime.setEnabled(false);
                     pickerDate.setVisibility(View.INVISIBLE);
                     pickerTime.setVisibility(View.INVISIBLE);
                     time.setVisibility(View.INVISIBLE);
                     date.setVisibility(View.INVISIBLE);
                 } else if (cursor.getString(cursor.getColumnIndexOrThrow(mDBHelper.TYPE)).equals(mSpinner.getItemAtPosition(1))) {
                     mSpinner.setSelection(1);
-                    checkBoxAlarm.setChecked(false);
-                    checkBoxAlarm.setEnabled(false);
+                    checkBoxTime.setChecked(false);
+                    checkBoxTime.setEnabled(false);
                     pickerDate.setVisibility(View.INVISIBLE);
                     pickerTime.setVisibility(View.INVISIBLE);
                     time.setVisibility(View.INVISIBLE);
                     date.setVisibility(View.INVISIBLE);
                 } else if (cursor.getString(cursor.getColumnIndexOrThrow(mDBHelper.TYPE)).equals(mSpinner.getItemAtPosition(2))) {
                     mSpinner.setSelection(2);
-                    checkBoxAlarm.setChecked(true);
-                    checkBoxAlarm.setEnabled(true);
+                    checkBoxTime.setChecked(true);
+                    checkBoxTime.setEnabled(true);
 
                 }
                 if (cursor.getString(cursor.getColumnIndexOrThrow(mDBHelper.TIME)).toString().equals(getString(R.string.Not_Set_Alert))) {
-                    checkBoxAlarm.setChecked(false);
+                    checkBoxTime.setChecked(false);
                     pickerDate.setVisibility(View.INVISIBLE);
                     pickerTime.setVisibility(View.INVISIBLE);
                     time.setVisibility(View.INVISIBLE);
@@ -115,7 +115,7 @@ public class EditNote extends AppCompatActivity {
             }
             cursor.close();
         }
-        checkBoxAlarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        checkBoxTime.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked == true) {
@@ -137,10 +137,6 @@ public class EditNote extends AppCompatActivity {
     public void onBackPressed() {
         Intent setIntent = new Intent(this, WriteView.class);
         startActivity(setIntent);
-    }
-
-    void showToast(CharSequence msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -172,7 +168,7 @@ public class EditNote extends AppCompatActivity {
                 cv.put(mDBHelper.TIME, getString(R.string.Not_Set));
                 cv.putNull(mDBHelper.DATE);
 
-                if (checkBoxAlarm.isChecked()){
+                if (checkBoxTime.isChecked()){
                     Calendar calender = Calendar.getInstance();
                     calender.clear();
                     calender.set(Calendar.MONTH, pickerDate.getMonth());

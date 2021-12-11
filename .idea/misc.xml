@@ -10,7 +10,7 @@
         <entry key="app/src/main/res/drawable/borderline.xml" value="0.14791666666666667" />
         <entry key="app/src/main/res/layout/activity_calendar.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_cancel_popup.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_create_note.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_create_note.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_detail_view.xml" value="0.2151268115942029" />
         <entry key="app/src/main/res/layout/activity_diary_view.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_edit_note.xml" value="0.25" />
@@ -28,6 +28,8 @@
         <entry key="app/src/main/res/layout/main_item_list.xml" value="0.22327898550724637" />
         <entry key="app/src/main/res/menu/menu_alert.xml" value="0.128125" />
         <entry key="app/src/main/res/menu/menu_create_note.xml" value="0.35885416666666664" />
+        <entry key="app/src/main/res/menu/menu_edit_note.xml" value="0.3328125" />
+        <entry key="app/src/main/res/menu/menu_main.xml" value="0.3328125" />
       </map>
     </option>
   </component>
