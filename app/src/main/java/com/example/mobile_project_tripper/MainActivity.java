@@ -80,7 +80,17 @@ public class MainActivity extends AppCompatActivity {
         add_diary_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String title_view = getIntent().getStringExtra("title");
+                String location_view = getIntent().getStringExtra("location");
+                String start_date_view = getIntent().getStringExtra("start_date");
+                String end_date_view = getIntent().getStringExtra("end_date");
+
                 Intent intent2 = new Intent(getApplicationContext(), WriteView.class);
+                intent2.putExtra("title","입력해주세요"); /*송신*/
+                intent2.putExtra("location","입력해주세요");
+                intent2.putExtra("start_date","클릭해주세요");
+                intent2.putExtra("end_date","클릭해주세요");
+
                 startActivity(intent2);
             }
         });
