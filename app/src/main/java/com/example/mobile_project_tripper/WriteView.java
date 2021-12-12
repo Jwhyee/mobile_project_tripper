@@ -1,7 +1,6 @@
 package com.example.mobile_project_tripper;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class WriteView extends AppCompatActivity {
-    Context context;
 
     SQLiteDatabase db;
     DBHelper mDBHelper;
@@ -33,12 +31,12 @@ public class WriteView extends AppCompatActivity {
     Button save_btn;
 
     EditText title, location;
-    TextView start_date, end_date;
+    TextView startDate, endDate;
 
     Intent serviceIntent;
 
-    private TextView textView_start_date;
-    private TextView textView_end_date;
+    private TextView textViewStartDate;
+    private TextView textViewEndDate;
     private DatePickerDialog.OnDateSetListener callbackMethod_start;
     private DatePickerDialog.OnDateSetListener callbackMethod_end;
     private static final int PICK_IMAGE = 100;
@@ -53,25 +51,24 @@ public class WriteView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_view);
-        Intent openMainActivity = getIntent();
+        startService();
+
+        /* 메인 값들 유지 시키기 위한 Intent 설정*/
         String title_view = getIntent().getStringExtra("title");
         String location_view = getIntent().getStringExtra("location");
-        String start_date_view = getIntent().getStringExtra("start_date");
-        String end_date_view = getIntent().getStringExtra("end_date");
-
-
-        startService();
+        String start_date_view = getIntent().getStringExtra("startDate");
+        String end_date_view = getIntent().getStringExtra("endDate");
 
         title = findViewById(R.id.title);
         location = findViewById(R.id.location);
-        start_date = findViewById(R.id.start_date);
-        end_date = findViewById(R.id.end_date);
+        startDate = findViewById(R.id.start_date);
+        endDate = findViewById(R.id.end_date);
+        imageview =findViewById(R.id.imageView);
 
         title.setText(title_view);
         location.setText(location_view);
-        start_date.setText(start_date_view);
-        end_date.setText(end_date_view);
-
+        startDate.setText(start_date_view);
+        endDate.setText(end_date_view);
 
         mDBHelper = new DBHelper(this);
 
@@ -86,31 +83,30 @@ public class WriteView extends AppCompatActivity {
         this.InitializeView(); // 캘린더 뷰 사용
         this.InitializeListener(); // 캘린더 뷰 사용
 
-        context = this.getBaseContext();
-
+        // RecycelrView 사용
         listView = (RecyclerView)findViewById(R.id.commentslist);
         listView.setHasFixedSize(true);
 
         diaryItemList.clear(); // 가져온 데이터 초기화
-        mDBHelper = new DBHelper(this);
+        mDBHelper = new DBHelper(this); // 객체 선언
+        // 쓰기 모드에서 데이터 저장소 불러오기
         db= mDBHelper.getReadableDatabase();
-        db.beginTransaction();
+        db.beginTransaction(); // Transaction 불러오기 -> 데이터베이스의 상태를 변화시키기 해서 수행
 
-        Cursor cursor = mDBHelper.LoadSQLiteDBCursor();
+        Cursor cursor = mDBHelper.LoadSQLiteDBCursor(); // Cursor -> 데이터베이스에 저장돼있는 테이블의 행을 참조하여 데이터 가져오는 역
         try {
-            cursor.moveToFirst();
-            System.out.println("SQLiteDB 개수 = " + cursor.getCount());
+            cursor.moveToFirst(); // 첫번째 행으로 이동
             while (!cursor.isAfterLast()) {
                 addGroupItem(cursor.getLong(0),cursor.getString(1),cursor.getString(2), cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6));
-                cursor.moveToNext();
+                cursor.moveToNext(); //
             }
-            db.setTransactionSuccessful();
+            db.setTransactionSuccessful(); // 정상 작동
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (cursor != null) {
                 cursor.close();
-                db.endTransaction();
+                db.endTransaction(); // 롤백
             }
         }
 
@@ -122,22 +118,18 @@ public class WriteView extends AppCompatActivity {
         listViewAdapter = new ListViewAdapter(diaryItemList, this); // Adapter 생성
         listView.setAdapter(listViewAdapter); // 어댑터를 리스트뷰에 세팅
 
-
         setInit(); // insert_diary 및 save_btn 활성화
     }
 
-    /**
-     * 알림서비스 실행
-     */
+     // 알림서비스 실행
+
     public void startService()
     {
         serviceIntent = new Intent(this, MyService.class);
         startService(serviceIntent);
     }
 
-    /**
-     * 알림서비스 중지
-     */
+     // 알림서비스 중지
     public void stopService()
     {
         serviceIntent = new Intent(this, MyService.class);
@@ -148,7 +140,7 @@ public class WriteView extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE){
-            Uri uri = data.getData();
+            Uri uri = data.getData(); // Uri 선언
             imageview.setImageURI(uri);
             String x = getPath(uri);
             if(mDBHelper.insert_image(x)){
@@ -160,9 +152,12 @@ public class WriteView extends AppCompatActivity {
     }
 
     private String getPath(Uri uri) {
-        if(uri == null) return null;
+        if(uri == null)
+            return null;
+
         String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        Cursor cursor = managedQuery(uri, projection, null, null, null); // query 내용 변동 없이 액티비티가 사용되는 동안 계속 쓰이므로 managedQuery
+
         if(cursor!= null){
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
@@ -174,20 +169,17 @@ public class WriteView extends AppCompatActivity {
     private void setInit() {
         mDBHelper = new DBHelper(this);
         save_btn = findViewById(R.id.save_btn);
-        Intent intent = getIntent();
-
-
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 stopService();
                 Toast.makeText(getApplicationContext(), "일기 추가 성공", Toast.LENGTH_SHORT).show();
                 title = (EditText) findViewById(R.id.title);
-                start_date = (TextView) findViewById(R.id.start_date);
-                end_date = (TextView) findViewById(R.id.end_date);
+                startDate = (TextView) findViewById(R.id.start_date);
+                endDate = (TextView) findViewById(R.id.end_date);
                 location = (EditText) findViewById(R.id.location);
 
-                mDBHelper.insert_diary(title.getText().toString(), start_date.getText().toString(), end_date.getText().toString(),location.getText().toString());
+                mDBHelper.insert_diary(title.getText().toString(), startDate.getText().toString(), endDate.getText().toString(),location.getText().toString());
                 mDBHelper.d_insert(title.getText().toString());
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
@@ -198,8 +190,8 @@ public class WriteView extends AppCompatActivity {
 
     public void InitializeView()
     {
-        textView_start_date = (TextView)findViewById(R.id.start_date);
-        textView_end_date = (TextView)findViewById(R.id.end_date);
+        textViewStartDate = (TextView)findViewById(R.id.start_date);
+        textViewEndDate = (TextView)findViewById(R.id.end_date);
     }
 
     public void InitializeListener()
@@ -210,14 +202,14 @@ public class WriteView extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
             {
                 Integer real_month = monthOfYear+1;
-                textView_start_date.setText(year + "년" + real_month + "월" + dayOfMonth + "일");
+                textViewStartDate.setText(year + "년" + real_month + "월" + dayOfMonth + "일");
             }
         };
         callbackMethod_end = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Integer real_month = monthOfYear+1;
-                textView_end_date.setText(year + "년" + real_month + "월" + dayOfMonth + "일");
+                textViewEndDate.setText(year + "년" + real_month + "월" + dayOfMonth + "일");
             }
         };
     }
@@ -265,16 +257,16 @@ public class WriteView extends AppCompatActivity {
             case R.id.action_new:
 
                 title = (EditText) findViewById(R.id.title);
-                start_date = (TextView) findViewById(R.id.start_date);
-                end_date = (TextView) findViewById(R.id.end_date);
+                startDate = (TextView) findViewById(R.id.start_date);
+                endDate = (TextView) findViewById(R.id.end_date);
                 location = (EditText) findViewById(R.id.location);
                 imageview = (ImageView) findViewById(R.id.imageView);
 
                 Intent openCreateNote = new Intent(WriteView.this, CreateNote.class);
                 openCreateNote.putExtra("title", title.getText().toString());
                 openCreateNote.putExtra("location", location.getText().toString());
-                openCreateNote.putExtra("start_date", start_date.getText().toString());
-                openCreateNote.putExtra("end_date", end_date.getText().toString());
+                openCreateNote.putExtra("startDate", startDate.getText().toString());
+                openCreateNote.putExtra("endDate", endDate.getText().toString());
 
                 startActivity(openCreateNote);
                 return true;
