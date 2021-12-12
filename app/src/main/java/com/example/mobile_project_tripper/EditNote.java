@@ -58,16 +58,13 @@ public class EditNote extends AppCompatActivity {
 
         final long id = getIntent().getExtras().getLong(getString(R.string.row_id_log));
 
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(
-                this, R.array.note_type, android.R.layout.simple_spinner_item);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.note_type, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(adapter);
-        mSpinner.setOnItemSelectedListener(
-                new AdapterView.OnItemSelectedListener() {
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(AdapterView parent, View view, int position, long id) {
                         checkBoxTime.setEnabled(true);
                     }
-
                     public void onNothingSelected(AdapterView parent) {
 
                     }
@@ -80,38 +77,13 @@ public class EditNote extends AppCompatActivity {
                 mTitleText.setText(cursor.getString(cursor.getColumnIndexOrThrow(mDBHelper.TITLE)));
                 mCost.setText(cursor.getString(cursor.getColumnIndexOrThrow(mDBHelper.COST)));
                 mDescriptionText.setText(cursor.getString(cursor.getColumnIndexOrThrow(mDBHelper.DETAIL)));
-                if (cursor.getString(cursor.getColumnIndexOrThrow(mDBHelper.TYPE)).equals(mSpinner.getItemAtPosition(0))) {
-                    mSpinner.setSelection(0);
-                    checkBoxTime.setChecked(false);
-                    checkBoxTime.setEnabled(false);
-                    pickerDate.setVisibility(View.INVISIBLE);
-                    pickerTime.setVisibility(View.INVISIBLE);
-                    time.setVisibility(View.INVISIBLE);
-                    date.setVisibility(View.INVISIBLE);
-                } else if (cursor.getString(cursor.getColumnIndexOrThrow(mDBHelper.TYPE)).equals(mSpinner.getItemAtPosition(1))) {
-                    mSpinner.setSelection(1);
-                    checkBoxTime.setChecked(false);
-                    checkBoxTime.setEnabled(false);
-                    pickerDate.setVisibility(View.INVISIBLE);
-                    pickerTime.setVisibility(View.INVISIBLE);
-                    time.setVisibility(View.INVISIBLE);
-                    date.setVisibility(View.INVISIBLE);
-                } else if (cursor.getString(cursor.getColumnIndexOrThrow(mDBHelper.TYPE)).equals(mSpinner.getItemAtPosition(2))) {
-                    mSpinner.setSelection(2);
-                    checkBoxTime.setChecked(true);
-                    checkBoxTime.setEnabled(true);
-
-                }
-                if (cursor.getString(cursor.getColumnIndexOrThrow(mDBHelper.TIME)).toString().equals(getString(R.string.Not_Set_Alert))) {
-                    checkBoxTime.setChecked(false);
-                    pickerDate.setVisibility(View.INVISIBLE);
-                    pickerTime.setVisibility(View.INVISIBLE);
-                    time.setVisibility(View.INVISIBLE);
-                    date.setVisibility(View.INVISIBLE);
-
-                }
-
-
+                mSpinner.setSelection(0);
+                checkBoxTime.setChecked(true);
+                checkBoxTime.setEnabled(true);
+                pickerDate.setVisibility(View.VISIBLE);
+                pickerTime.setVisibility(View.VISIBLE);
+                time.setVisibility(View.VISIBLE);
+                date.setVisibility(View.VISIBLE);
             }
             cursor.close();
         }
@@ -141,7 +113,6 @@ public class EditNote extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_edit_note, menu);
         return true;
     }
@@ -190,7 +161,7 @@ public class EditNote extends AppCompatActivity {
 
                 db.update(mDBHelper.TABLE_NAME_TEMP, cv, mDBHelper.C_ID + "=" + id, null);
                 db.update(mDBHelper.TABLE_NAME, cv, mDBHelper.C_ID + "=" + id, null);
-
+                Toast.makeText(getApplicationContext(), "수정 됐습니다", Toast.LENGTH_SHORT).show();
                 Intent openMainScreen = new Intent(EditNote.this, WriteView.class);
                 openMainScreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(openMainScreen);

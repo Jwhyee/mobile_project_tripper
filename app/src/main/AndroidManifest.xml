@@ -23,7 +23,6 @@
         <activity android:name=".ViewNote" />
         <activity android:name=".CreateNote" />
         <activity android:name=".WriteView" />
-        <activity android:name=".ImageInsert" />
         <activity android:name=".DetailView" />
         <activity
             android:name=".MainActivity"

@@ -35,7 +35,7 @@ public class CreateNote extends AppCompatActivity {
     TimePicker pickerTime;
     TextView time;
     TextView date;
-    TextView title_view, location_view, start_date_view, end_date_view;
+    TextView titleView, locationView, startDateView, endDateView;
     CheckBox checkBoxTime;
 
     @Override
@@ -43,21 +43,20 @@ public class CreateNote extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note);
 
-        Intent openCreateNote = getIntent();
         String title = getIntent().getStringExtra("title");
         String location = getIntent().getStringExtra("location");
-        String start_date = getIntent().getStringExtra("start_date");
-        String end_date = getIntent().getStringExtra("end_date");
+        String startDate = getIntent().getStringExtra("startDate");
+        String endDate = getIntent().getStringExtra("endDate");
 
-        title_view = (TextView) findViewById(R.id.title_view);
-        location_view = (TextView) findViewById(R.id.location_view);
-        start_date_view = (TextView) findViewById(R.id.start_date_view);
-        end_date_view = (TextView) findViewById(R.id.end_date_view);
+        titleView = (TextView) findViewById(R.id.title_view);
+        locationView = (TextView) findViewById(R.id.location_view);
+        startDateView = (TextView) findViewById(R.id.start_date_view);
+        endDateView = (TextView) findViewById(R.id.end_date_view);
 
-        title_view.setText(title);
-        location_view.setText(location);
-        start_date_view.setText(start_date);
-        end_date_view.setText(end_date);
+        titleView.setText(title);
+        locationView.setText(location);
+        startDateView.setText(startDate);
+        endDateView.setText(endDate);
 
 
         mDBHelper = new DBHelper(this);
@@ -78,9 +77,6 @@ public class CreateNote extends AppCompatActivity {
         time.setVisibility(View.INVISIBLE);
         date.setVisibility(View.INVISIBLE);
 
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.note_type, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinner.setAdapter(adapter);
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView parent, View view, int position, long id) {
                 checkBoxTime.setEnabled(true);
@@ -131,7 +127,7 @@ public class CreateNote extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch(item.getItemId()) {
-            case R.id.action_save:
+            case R.id.action_save: // 값들 저장
                 String title = mTitleText.getText().toString();
                 String cost = mCost.getText().toString();
                 String detail = mDescriptionText.getText().toString();
@@ -143,7 +139,7 @@ public class CreateNote extends AppCompatActivity {
                 cv.put(mDBHelper.TYPE, type);
                 cv.put(mDBHelper.TIME, getString(R.string.Not_Set));
 
-                if (checkBoxTime.isChecked()){
+                if (checkBoxTime.isChecked()){ // 날짜 선택 시 날짜까지 저장
                     Calendar calender = Calendar.getInstance();
                     calender.clear();
                     calender.set(Calendar.MONTH, pickerDate.getMonth());
@@ -166,11 +162,11 @@ public class CreateNote extends AppCompatActivity {
                 db.insert(mDBHelper.TABLE_NAME_TEMP, null, cv);
 
                 Intent openMainScreen = new Intent(this, WriteView.class);
-
-                openMainScreen.putExtra("title", title_view.getText().toString());
-                openMainScreen.putExtra("location", location_view.getText().toString());
-                openMainScreen.putExtra("start_date", start_date_view.getText().toString());
-                openMainScreen.putExtra("end_date", end_date_view.getText().toString());
+                Toast.makeText(getApplicationContext(), "일정이 추가됐습니다", Toast.LENGTH_SHORT).show();
+                openMainScreen.putExtra("title", titleView.getText().toString());
+                openMainScreen.putExtra("location", locationView.getText().toString());
+                openMainScreen.putExtra("startDate", startDateView.getText().toString());
+                openMainScreen.putExtra("endDate", endDateView.getText().toString());
 
                 openMainScreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(openMainScreen);
@@ -178,6 +174,12 @@ public class CreateNote extends AppCompatActivity {
 
             case R.id.action_back:
                 Intent openMainActivity = new Intent(this, WriteView.class);
+
+                openMainActivity.putExtra("title", titleView.getText().toString());
+                openMainActivity.putExtra("location", locationView.getText().toString());
+                openMainActivity.putExtra("startDate", startDateView.getText().toString());
+                openMainActivity.putExtra("endDate", endDateView.getText().toString());
+
                 startActivity(openMainActivity);
                 return true;
 

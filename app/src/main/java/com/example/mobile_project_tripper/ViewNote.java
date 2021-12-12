@@ -31,7 +31,7 @@ public class ViewNote extends AppCompatActivity {
         TextView title = findViewById(R.id.title);
         TextView cost = findViewById(R.id.cost);
         TextView detail = findViewById(R.id.detail);
-        TextView notetype = findViewById(R.id.note_type_ans);
+        TextView type = findViewById(R.id.type);
         TextView time = findViewById(R.id.alertvalue);
         TextView date = findViewById(R.id.datevalue);
         if (cursor != null) {
@@ -39,7 +39,7 @@ public class ViewNote extends AppCompatActivity {
                 title.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.TITLE)));
                 cost.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.COST)));
                 detail.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.DETAIL)));
-                notetype.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.TYPE)));
+                type.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.TYPE)));
                 time.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.TIME)));
                 date.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.DATE)));
 
@@ -90,7 +90,6 @@ public class ViewNote extends AppCompatActivity {
                                 Intent openMainActivity = new Intent(getApplicationContext(), WriteView.class);
                                 Toast.makeText(getApplicationContext(), "삭제 됐습니다", Toast.LENGTH_SHORT).show();
                                 startActivity(openMainActivity);
-
                             }
                         })
                         .setNegativeButton(getString(R.string.no), null)    //Do nothing on no
