@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -122,7 +123,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db3 = this.getReadableDatabase();
         db3.beginTransaction();
         // Select All Query
-        String selectQuery3 = "SELECT * FROM diary_detail_list_temp WHERE d_title ='"+key+"';";
+        String selectQuery3 = "SELECT d_title, title, type, time, cost FROM diary_detail_list_temp WHERE d_title ='"+key+"';";
         Cursor cursor3 = null;
         try {
             cursor3 = db3.rawQuery(selectQuery3, null);

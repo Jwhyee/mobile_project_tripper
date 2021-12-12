@@ -88,6 +88,7 @@ public class DetailView extends AppCompatActivity {
         listView_detail.setAdapter(listViewAdapter_detail); // 어댑터를 리스트뷰에 세팅
         //
     }
+
     public void addGroupItem(String d_title, String subtitle, String type, String time, String cost){
         DiaryItem_detail item = new DiaryItem_detail();
         item.setTitle(d_title);
@@ -122,6 +123,12 @@ public class DetailView extends AppCompatActivity {
                 startActivity(openMainActivity);
                 return true;
 
+            case R.id.action_edit:
+
+                Intent openEditNote = new Intent(DetailView.this, EditNote.class);
+                openEditNote.putExtra(getString(R.string.intent_row_id), id);
+                startActivity(openEditNote);
+                return true;
 
             case R.id.action_discard:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
