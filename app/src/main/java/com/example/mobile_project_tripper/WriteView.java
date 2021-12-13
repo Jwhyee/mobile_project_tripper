@@ -1,9 +1,13 @@
 package com.example.mobile_project_tripper;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -41,6 +45,8 @@ public class WriteView extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener callbackMethod_end;
     private static final int PICK_IMAGE = 100;
     private ImageView imageview;
+    private SoundPool soundPool;
+    int soundPlay;
 
     private RecyclerView listView;
     private ArrayList<DiaryItem> diaryItemList = new ArrayList<>(); // SQLite에서 가져온 원본 데이터 리스트
@@ -52,6 +58,7 @@ public class WriteView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_view);
         startService();
+
 
         /* 메인 값들 유지 시키기 위한 Intent 설정*/
         String title_view = getIntent().getStringExtra("title");
@@ -173,6 +180,20 @@ public class WriteView extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 stopService();
+
+                Context c = view.getContext();
+                MediaPlayer m = MediaPlayer.create(c, R.raw.buttonclick);
+                m.start();
+
+                m.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp)
+                    {
+                        mp.stop();
+                        mp.release();
+                    }
+                });
+
                 Toast.makeText(getApplicationContext(), "일기 추가 성공", Toast.LENGTH_SHORT).show();
                 title = (EditText) findViewById(R.id.title);
                 startDate = (TextView) findViewById(R.id.start_date);

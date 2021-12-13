@@ -180,7 +180,8 @@
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:backgroundTint="#536DFE" />
+                app:backgroundTint="#536DFE"
+                android:soundEffectsEnabled="false"/>
         </LinearLayout>
 
 
