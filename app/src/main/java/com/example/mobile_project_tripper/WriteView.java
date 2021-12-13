@@ -45,8 +45,7 @@ public class WriteView extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener callbackMethod_end;
     private static final int PICK_IMAGE = 100;
     private ImageView imageview;
-    private SoundPool soundPool;
-    int soundPlay;
+
 
     private RecyclerView listView;
     private ArrayList<DiaryItem> diaryItemList = new ArrayList<>(); // SQLite에서 가져온 원본 데이터 리스트
