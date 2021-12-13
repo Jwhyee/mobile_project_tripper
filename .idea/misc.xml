@@ -31,10 +31,8 @@
         <entry key="app/src/main/res/layout/main_item_list.xml" value="0.22327898550724637" />
         <entry key="app/src/main/res/menu/menu_alert.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_create_note.xml" value="0.35885416666666664" />
-        <entry key="app/src/main/res/menu/menu_detail_view.xml" value="0.25" />
         <entry key="app/src/main/res/menu/menu_edit_note.xml" value="0.3328125" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.3328125" />
-        <entry key="app/src/main/res/menu/menu_view_note.xml" value="0.25" />
       </map>
     </option>
   </component>
