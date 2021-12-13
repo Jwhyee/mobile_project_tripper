@@ -159,7 +159,7 @@ public class DetailView extends AppCompatActivity {
                         .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 dbs.delete(DBHelper.TABLE_NAME_MAIN, DBHelper.D_NO + "=" + id, null);
-                                dbs.delete(DBHelper.TABLE_NAME_TEMP, DBHelper.D_TITLE + "=" + title, null);
+                                dbhelp.d_delete(title.toString());
                                 dbs.close();
                                 Intent openMainActivity = new Intent(getApplicationContext(), MainActivity.class);
                                 Toast.makeText(getApplicationContext(), "삭제 됐습니다", Toast.LENGTH_SHORT).show();
