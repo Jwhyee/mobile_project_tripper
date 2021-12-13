@@ -52,7 +52,13 @@ public class DetailView extends AppCompatActivity {
                 d_start_day.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.D_START_DATE)));
                 d_end_day.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.D_END_DATE)));
                 d_location.setText(cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.D_LOCATION)));
-                diary_img.setImageBitmap(dbhelp.getImage(rid));
+                if((dbhelp.getImage(rid)) ==  null){
+                    diary_img.setImageResource(R.drawable.no_image);
+                }
+                else{
+                    diary_img.setImageBitmap(dbhelp.getImage(rid));
+                }
+
                 // 원하는 컬럼값의 인덱스를 받음, 인자값으로 인덱스를 구하고 싶은 컬럼명 작성
             }
             cursor.close();

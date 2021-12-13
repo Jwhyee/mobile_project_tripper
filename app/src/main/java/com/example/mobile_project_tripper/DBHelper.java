@@ -150,6 +150,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM images");
 
     }
+
     //사진 추가
     public Boolean insert_image(String x){
         SQLiteDatabase db = getWritableDatabase();
@@ -176,7 +177,13 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("select * from diary_detail where d_no = ?", new String[]{String.valueOf(d_no)});
         if(cursor.moveToNext()){
             byte[] img = cursor.getBlob(4 );
-            bt = BitmapFactory.decodeByteArray(img, 0, img.length);
+            if(img == null){
+                bt = null;
+            }
+            else{
+                bt = BitmapFactory.decodeByteArray(img, 0, img.length);
+            }
+
         }
         return bt;
     }
