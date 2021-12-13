@@ -29,9 +29,8 @@ public class MyService extends Service {
         return START_NOT_STICKY;
     }
 
-    /**
-     * 포그라운드 서비스
-     */
+    // 포그라운드 서비스
+
     public void initializeNotification()
     {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "1");
