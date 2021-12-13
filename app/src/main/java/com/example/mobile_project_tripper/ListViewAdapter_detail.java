@@ -68,7 +68,7 @@ public class ListViewAdapter_detail extends RecyclerView.Adapter<RecyclerView.Vi
             });
             */
         }
-        
+
         public void onBind2(DiaryItem_detail item) {
             d_title.setText(item.getTitle());
             detail_time.setText(item.getTime());
