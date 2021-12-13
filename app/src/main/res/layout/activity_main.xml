@@ -28,20 +28,21 @@
                     android:id="@+id/logo_name"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:layout_weight="9"
+                    android:layout_weight="9.8"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
-                    android:text="tripper"
                     android:textAlignment="center"
-                    android:textSize="10pt" />
+                    android:text="tripper"
+                    android:textSize="10pt"/>
 
                 <ImageView
                     android:id="@+id/calendarImg"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
                     android:gravity="center"
-                    app:srcCompat="@drawable/calendar_resize" />
+                    app:srcCompat="@drawable/calendar_resize"
+                    android:layout_centerHorizontal="true"/>
             </LinearLayout>
 
             <EditText
