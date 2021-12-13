@@ -151,6 +151,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    public void d_delete(String d_title){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM diary_detail_list_temp WHERE d_title = '"+d_title+"';");
+    }
+
     //사진 추가
     public Boolean insert_image(String x){
         SQLiteDatabase db = getWritableDatabase();
